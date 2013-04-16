@@ -8,7 +8,7 @@
     (field (radiation 0))
     (field (velocity (mcons 0 0))
     (field (aim-direction (/ pi 2)))
-    (field (inventory (cons #f #f)))
+    (field (inventory (mcons #f #f)))
     
     (define/public (get-team) team)
     
