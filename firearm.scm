@@ -1,0 +1,5 @@
+(define firearm%
+  
+  (class item%
+    
+    

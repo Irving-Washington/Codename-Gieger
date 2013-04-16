@@ -1,0 +1,17 @@
+(load "game-object.scm")
+(load "agent.scm")
+(load "item.scm")
+(load "weapon.scm")
+;(load "consumable.scm")
+;(load "projectile.scm")
+;(load "firearm.scm")
+(load "magazine.scm")
+(load "player.scm")
+(load "level.scm")
+(load "tile.scm")
+
+(define *level* (new level%))
+  
+(define matrix '())
+(define (create-level-matrix a b)
+  (void))
