@@ -1,3 +1,4 @@
+
 (define tile%
   
   (class object%
@@ -16,6 +17,7 @@
 
     ;Draw method
     (define/public (draw)
-      (send *renderer* draw-tile image position))
+      (display position))
+      ;(send *renderer* draw-tile image position))
     
     (super-new)))
