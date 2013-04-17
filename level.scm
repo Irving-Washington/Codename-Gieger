@@ -2,7 +2,8 @@
   
   (class object%
     
-    (field (tile-matrix '()))
+    (init-field tile-matrix)
+    
     (field (game-objects '()))
     (field (object-count 0))
     
@@ -13,10 +14,13 @@
                     (begin
                       (set! object-count (+ 1 object-count))
                       (- object-count 1)))
-    
-    
-    (define/public (set-tile-matrix! matrix) (set! tile-amtrix matrix))
-    
+
+    (define/public (draw)
+      (for-each (lambda (row)
+                  (for-each (lambda (tile)
+                              (send tile draw))
+                            row)
+                  tile-matrix)))
     
     (super-new)))
     
