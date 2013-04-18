@@ -2,9 +2,9 @@
   
   (class object%
     
-    (init-field *player*
-                *game-loop*)
+    (init-field *player*)
     
+    ;Keyboard controls
     (define/public (new-key-event key-event)
       (cond 
         ;Movement key-events
@@ -22,6 +22,7 @@
         ;Pause menu
         ((eq? key-event 'esc) (send *game-loop* pause))))
     
+    ;Mouse controls
     (define/public (new-mouse-event mouse-event)
       (cond
         ;Fire

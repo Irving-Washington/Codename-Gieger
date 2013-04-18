@@ -1,4 +1,4 @@
-(define game-canvas%
+(define input-listener%
  
   (class canvas%
     
@@ -6,6 +6,7 @@
     (init-field *interaction*)
     (define aux-eventspace (make-eventspace))
 
+    ;Keyboard events
     (define/override (on-char key-event)
       (parameterize ((current-eventspace aux-eventspace))
         (queue-callback
@@ -14,6 +15,7 @@
            (send *interaction* new-key-event (send key-event get-key-release-code))
            (refresh)))))
     
+    ;Mouse events
     (define/override (on-event mouse-event)
       (parameterize ((current-eventspace aux-eventspace))
         (queue-callback
@@ -26,5 +28,5 @@
     (super-new)))
 
 (define game-frame (new frame% (label "game") (width 600) (height 400)))
-(define game-canvas (new game-canvas% (parent game-frame)))
+(define input-listener (new input-listener% (parent game-frame)))
 (send game-frame show #t)
