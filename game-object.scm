@@ -1,12 +1,11 @@
 (define game-object%
   
   (class object%
-    (init-field name
-                position
+    (init-field position
                 image)
     
     ;Name method
-    (define/public (get-name) name)
+    ;(define/public (get-name) name)
     
     ;Position method
     (define/public (get-position) position)
@@ -15,13 +14,13 @@
     (define/public (get-image) image)
     
     ;Draw method
-    (define/public (draw)
-      (send *renderer* draw-game-object image position))
+    (define/public (draw level-buffer)
+      (send level-buffer draw-bitmap image (mcar position) (mcdr position)))
     
     ;Delete method
-    (define/public (delete!)
-      (send *level* delete-game-object! name))
+    ;(define/public (delete!)
+     ; (send *level* delete-game-object! name))
     
-    (send *level* add-game-object! this)
+    ;(send *level* add-game-object! this)
     
     (super-new)))

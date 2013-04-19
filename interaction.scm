@@ -2,13 +2,15 @@
   
   (class object%
     
-    (init-field *player*)
+    (init-field lol)
     
     ;Keyboard controls
     (define/public (new-key-event key-event)
       (cond 
         ;Movement key-events
-        ((eq? key-event 'w) (send *player* increase-velocity-y! -1))
+        ((eq? key-event 'w) (begin
+                              (display 'w)
+                              (send *player* increase-velocity-y! -1)))
         ((eq? key-event 'a) (send *player* increase-velocity-x! -1))
         ((eq? key-event 's) (send *player* increase-velocity-y! 1))
         ((eq? key-event 'd) (send *player* increase-velocity-x! 1))
@@ -33,6 +35,7 @@
     
     (define/public (new-mouse-position mouse-position)
       ;Update mouse position
-      (send *player* set-aim-target! mouse-position))
+      ;(send *player* set-aim-target! mouse-position))
+      (void))
     
     (super-new)))

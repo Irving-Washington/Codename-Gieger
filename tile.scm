@@ -1,4 +1,3 @@
-
 (define tile%
   
   (class object%
@@ -16,8 +15,7 @@
     (define/public (get-position) position)
 
     ;Draw method
-    (define/public (draw)
-      (display position))
-      ;(send *renderer* draw-tile image position))
+    (define/public (draw level-buffer)
+      (send level-buffer draw-bitmap image (car position) (cdr position)))
     
     (super-new)))

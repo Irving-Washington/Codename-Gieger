@@ -1,9 +1,10 @@
+;(load "game-object.scm")
 (define agent%
   
   (class game-object%
     
     (init-field team)
-    
+
     (field (health 100))
     (field (radiation 0))
     (field (velocity (mcons 0 0)))
@@ -39,10 +40,10 @@
     (define/public (set-aim-direction! angle)
       (set! aim-direction angle))
     (define/public (set-aim-target! coordinates)
-      (let ((x-position (+ 16 (car position)))
-            (y-position (+ 16 (cdr position)))
-            (x-coordinates (car coordinates))
-            (y-coordinates (cdr coordinates)))
+      (let ((x-position (+ 16 (mcar position)))
+            (y-position (+ 16 (mcdr position)))
+            (x-coordinates (mcar coordinates))
+            (y-coordinates (mcdr coordinates)))
         (cond ((or (and (> (- x-coordinates x-position) 0)
                         (> (- y-coordinates y-position) 0))
                    (and (> (- x-coordinates x-position) 0)

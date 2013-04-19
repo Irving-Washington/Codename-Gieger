@@ -19,7 +19,7 @@
       (parameterize ((current-eventspace aux-eventspace))
         (queue-callback
          (lambda ()
-           (send *interaction* new-mouse-event (send mouse-event get-mouse-event))
+           ;(send *interaction* new-mouse-event (send mouse-event get-mouse-event))
            (send *interaction* new-mouse-position (cons (send mouse-event get-x)
                                                         (send mouse-event get-y)))
            (refresh)))))
