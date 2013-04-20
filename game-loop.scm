@@ -4,6 +4,7 @@
   (new timer%
        [notify-callback (lambda ()
                           (begin
+                            (send *level* move-objects)
                             (send *level* draw-objects-buffer)
                             (send *canvas* refresh)))]))
-(send *game-loop* start 1000)
+(send *game-loop* start 8)

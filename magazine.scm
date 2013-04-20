@@ -1,6 +1,6 @@
 (define magazine%
   
-  (class firearm%
+  (class item%
     
     (init-field ammunition-capacity)
     (field (ammunition ammunition-capacity))
@@ -11,6 +11,6 @@
     
     ;Unload method
     (define/public (unload!)
-      (set! ammunition (- ammunition 1))
+      (set! ammunition (- ammunition 1)))
     
-    (super-new))))
+    (super-new)))
