@@ -50,8 +50,8 @@
     (define/public (get-projectile-position)
       (mcons (+ (mcar position) (round (* 32 (cos angle)))) (+ (mcdr position) (round (* -32 (sin angle))))))
     
-    (define/public (get-projectile-velocity)
-      (mcons (round (* 15 (cos angle))) (round (* -15 (sin angle)))))
+    (define/public (get-projectile-velocity speed-factor)
+      (mcons (round (* speed-factor (cos angle))) (round (* (- speed-factor) (sin angle)))))
    
     ;Inventory methods
     (define/public (item-add! item)

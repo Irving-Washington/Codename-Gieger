@@ -33,8 +33,8 @@
       
 
 (define *window* (new frame%
-                      [width 1024]
-                      [height 1024]
+                      [width 1064]
+                      [height 1064]
                       [label "The Exclusion Zone"]))
 
 (define (*renderer* canvas dc)

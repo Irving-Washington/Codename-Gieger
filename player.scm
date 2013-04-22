@@ -17,7 +17,8 @@
         (begin
           (new projectile% 
                [projectile-size 8]
-               [start-velocity (get-projectile-velocity)]
+               [start-velocity (get-projectile-velocity 10)]
+               [slow-down #t]
                [current-agent #f]
                [position (get-projectile-position)]
                [image (send (mcar inventory) get-image)])
