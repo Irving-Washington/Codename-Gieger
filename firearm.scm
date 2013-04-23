@@ -13,6 +13,7 @@
                  [start-velocity (send current-agent get-projectile-velocity 30)]
                  [projectile-size 2]
                  [slow-down #f]
+                 [destroy-on-impact #t]
                  [current-agent #f]
                  [position (send current-agent get-projectile-position)]
                  [image (read-bitmap "graphics/bullet-1.bmp")])
@@ -28,6 +29,7 @@
     ;Check method
     (define/public (check)
       (send current-magazine remaining-ammunition))
+    
     (super-new)))
 
              

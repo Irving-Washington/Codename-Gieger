@@ -24,6 +24,16 @@
       (begin
         (set! object-count (+ 1 object-count))
         (- object-count 1)))
+    
+    (define/public (delete-game-object! object)
+      (define (delete-helper old-game-objects new-game-objects)
+        (cond
+          ((null? old-game-objects) new-game-objects)
+          ((equal? object (mcar old-game-objects))
+           (delete-helper (mcdr old-game-objects) new-game-objects))
+          (else
+           (delete-helper (mcdr old-game-objects) (mcons (mcar old-game-objects) new-game-objects)))))
+      (set! game-objects (delete-helper game-objects '())))  
 
     ;Load and draw level background
     (define/public (draw-level-buffer)
@@ -42,8 +52,20 @@
     
     (define/public (move-objects)
       (mfor-each (lambda (object)
-                   (unless (collision? object)
-                     (send object move!)))
+                   (cond 
+                     ((and (collision? object)
+                           (is-a? object projectile%) 
+                           (send object destroy-on-impact?))
+                      (delete-game-object! object))
+                     ((and (collision? object)
+                           (is-a? object projectile%)
+                           (not (send object destroy-on-impact?)))
+                      (send object bounce!))
+                     ((and (collision? object)
+                           (is-a? object agent%))
+                      (void))
+                     (else
+                      (send object move!))))
                  game-objects))
     
     (define/private (pixel-to-tile pixel-position)

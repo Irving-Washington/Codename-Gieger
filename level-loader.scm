@@ -19,7 +19,7 @@
                                   [position (cons (* pos-x 32) (* pos-y 32))]
                                   [seethrough #t]
                                   [collidable #t]
-                                  [image (read-bitmap "bush-1.bmp")]))
+                                  [image (read-bitmap "graphics/bush-1.bmp")]))
           (else (error "Nu such tile: " tile-type))))                                        
       
       (let ((tile-matrix (new matrix% [rows 32] [columns 32]))

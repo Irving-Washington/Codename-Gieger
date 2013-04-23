@@ -5,6 +5,7 @@
     (inherit-field position
                    velocity)
     (init-field current-agent)
+    (field (zero-velocity (mcons 0 0)))
     
     ;Current agent methods
     (define/public (get-current-agent) current-agent)
@@ -16,7 +17,8 @@
         (super draw level-buffer)))
     
     (define/override (move!)
-      (set-mcar! position (+ (mcar position) (mcar velocity)))
-      (set-mcdr! position (+ (mcdr position) (mcdr velocity))))
-                     
+      (unless (equal? velocity zero-velocity)
+        (set-mcar! position (+ (mcar position) (mcar velocity)))
+        (set-mcdr! position (+ (mcdr position) (mcdr velocity)))))
+      
     (super-new)))
