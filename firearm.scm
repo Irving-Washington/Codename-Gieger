@@ -17,8 +17,7 @@
                  [current-agent #f]
                  [position (send current-agent get-projectile-position)]
                  [image (read-bitmap "graphics/bullet-1.bmp")])
-            (set! ammunition (- ammunition 1)))
-          (display "Empty!")))
+            (set! ammunition (- ammunition 1)))))
     
     ;Reload method
     (define/public (reload)

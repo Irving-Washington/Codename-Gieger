@@ -17,7 +17,7 @@
         (begin
           (new projectile% 
                [projectile-size 8]
-               [start-velocity (get-projectile-velocity 20)]
+               [start-velocity (get-projectile-velocity 25)]
                [slow-down #t]
                [destroy-on-impact #f]
                [current-agent #f]

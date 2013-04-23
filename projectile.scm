@@ -39,12 +39,12 @@
     
     (define/override (move!)
       (super move!)
-      (unless (and (not slow-down) (equal? velocity zero-velocity))
-        (if (and (< (abs (mcdr decimal-velocity)) 1) (< (abs (mcar decimal-velocity)) 1))
+      (unless (not (and (not (equal? velocity zero-velocity)) slow-down))
+        (if (and (< (abs (mcdr decimal-velocity)) 2) (< (abs (mcar decimal-velocity)) 2))
             (begin (set-mcar! decimal-velocity 0)
                    (set-mcdr! decimal-velocity 0))
-            (begin (set-mcar! decimal-velocity (* 0.98 (mcar decimal-velocity)))
-                   (set-mcdr! decimal-velocity (* 0.98 (mcdr decimal-velocity)))))
+            (begin (set-mcar! decimal-velocity (* 0.96 (mcar decimal-velocity)))
+                   (set-mcdr! decimal-velocity (* 0.96 (mcdr decimal-velocity)))))
         (set-mcar! velocity (round (mcar decimal-velocity)))
         (set-mcdr! velocity (round (mcdr decimal-velocity)))))))
       
