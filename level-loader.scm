@@ -9,12 +9,12 @@
                                   [position (cons (* pos-x 32) (* pos-y 32))]
                                   [seethrough #t]
                                   [collidable #f]
-                                  [image (read-bitmap "grass-1.bmp")]))
+                                  [image (read-bitmap "graphics/grass-1.bmp")]))
           ((eq? 1 tile-type) (new tile%
                                   [position (cons (* pos-x 32) (* pos-y 32))]
                                   [seethrough #f]
                                   [collidable #t]
-                                  [image (read-bitmap "wall-1.bmp")]))
+                                  [image (read-bitmap "graphics/bwall-1.bmp")]))
           ((eq? 3 tile-type) (new tile%
                                   [position (cons (* pos-x 32) (* pos-y 32))]
                                   [seethrough #t]

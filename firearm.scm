@@ -11,11 +11,11 @@
           (begin 
             (new projectile%
                  [start-velocity (send current-agent get-projectile-velocity 30)]
-                 [projectile-size 4]
+                 [projectile-size 2]
                  [slow-down #f]
                  [current-agent #f]
                  [position (send current-agent get-projectile-position)]
-                 [image (read-bitmap "bullet.bmp")])
+                 [image (read-bitmap "graphics/bullet-1.bmp")])
             (set! ammunition (- ammunition 1)))
           (display "Empty!")))
     

@@ -15,12 +15,23 @@
 (load "interaction.scm")
 (load "input-listener.scm")
 (load "level-loader.scm")
+(load "animation-package.scm")
 
 (define *level-loader* (new level-loader%))
 (define *level* (new level% [tile-matrix (send *level-loader* load-level 1)]))
 (send *level* draw-level-buffer)
 
-(define *player* (new player% [position (mcons 32 32)] [image (read-bitmap "player.bmp")][team 'kgb]))
+(define *player* (new player%
+                      [position (mcons 32 32)]
+                      [image (read-bitmap "graphics/litvinenko-armed.png")]
+                      [team 'kgb]
+                      [animation-package (new animation-package%
+                                              [idle-image (read-bitmap "graphics/litvinenko-still.png")]
+                                              [move-image-pair (cons 
+                                                                (read-bitmap "graphics/litvinenko-right-hand-forward.png")
+                                                                (read-bitmap "graphics/litvinenko-left-hand-forward.png"))]
+                                              [use-image (read-bitmap "graphics/litvinenko-still.png")])]))
+                                              
 
 (send *player*
       item-add!
@@ -29,7 +40,7 @@
            [base-damage 70]
            [current-agent *player*]
            [position (send *player* get-position)]
-           [image (read-bitmap "gun.bmp")]))
+           [image (read-bitmap "graphics/gun-1.png")]))
       
 
 (define *window* (new frame%

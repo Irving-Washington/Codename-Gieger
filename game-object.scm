@@ -7,7 +7,7 @@
     (field (angle 0))
     (field (size 16))
     (field (velocity (mcons 0 0)))
-    (field (max-velocity 20))
+    (field (max-velocity 4))
 
     (define/public (get-angle) angle)
     
@@ -18,6 +18,9 @@
     (define/public (get-position) position)
     
     ;Movement methods
+    (define/public (move!)
+      (void))
+    
     (define/public (get-future-position)
       (cond
         ((and (>= (mcar velocity) 0) (>= (mcdr velocity) 0))
@@ -32,21 +35,27 @@
     (define/public (get-velocity) velocity)
     (define/public (set-velocity! new-velocity)
       (set! velocity new-velocity))
+    
     (define/public (set-velocity-x! value)
       (unless (>= value max-velocity)
         (set-mcar! velocity value)))
+    
     (define/public (set-velocity-y! value)
       (unless (>= value max-velocity)
         (set-mcdr! velocity value)))
+    
     (define/public (increase-velocity-x! delta-value)
-      (unless (>= (+ delta-value (mcar velocity)) max-velocity)
+      (unless (>= (abs (+ delta-value (mcar velocity))) max-velocity)
         (set-mcar! velocity (+ (mcar velocity) delta-value))))
+    
     (define/public (increase-velocity-y! delta-value)
-      (unless (>= (+ delta-value (mcdr velocity)) max-velocity)
+      (unless (>= (abs (+ delta-value (mcdr velocity))) max-velocity)
         (set-mcdr! velocity (+ (mcdr velocity) delta-value))))
     
     ;Image method
     (define/public (get-image) image)
+    (define/public (set-image! new-image)
+      (set! image new-image))
     
     ;Draw method
     (define/public (draw level-buffer)
@@ -56,8 +65,7 @@
       (send level-buffer rotate (- angle))
       (send level-buffer translate (- (+ size (mcar position))) (- (+ size (mcdr position)))))
     
-    (define/public (move!)
-      (display 'whyyy))
+    
     
     
     ;Delete method
