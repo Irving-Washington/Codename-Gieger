@@ -75,15 +75,15 @@
     
     (define/public (collision? object)
       (let ((tile-pos (pixel-to-tile (send object get-future-position))))
-        (if (send (send tile-matrix
-                        get-element
-                        (mcar tile-pos)
-                        (mcdr tile-pos))
-                  collidable?)
-            #t
-            #f)))
-                 
-      
+            (if (send (send tile-matrix
+                            get-element
+                            (mcar tile-pos)
+                            (mcdr tile-pos))
+                      collidable?)
+                #t
+                #f)))
+        
+        
     (super-new)))
 
 

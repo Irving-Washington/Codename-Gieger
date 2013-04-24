@@ -20,7 +20,27 @@
                                   [seethrough #t]
                                   [collidable #t]
                                   [image (read-bitmap "graphics/bush-1.bmp")]))
-          (else (error "Nu such tile: " tile-type))))                                        
+          ((eq? 4 tile-type) (new tile%
+                                  [position (cons (* pos-x 32) (* pos-y 32))]
+                                  [seethrough #t]
+                                  [collidable #f]
+                                  [image (read-bitmap "graphics/asphalt-1.bmp")]))
+          ((eq? 5 tile-type) (new tile%
+                                  [position (cons (* pos-x 32) (* pos-y 32))]
+                                  [seethrough #t]
+                                  [collidable #f]
+                                  [image (read-bitmap "graphics/asphalt-2.bmp")]))
+          ((eq? 6 tile-type) (new tile%
+                                  [position (cons (* pos-x 32) (* pos-y 32))]
+                                  [seethrough #t]
+                                  [collidable #f]
+                                  [image (read-bitmap "graphics/asphalt-3.bmp")]))
+          ((eq? 7 tile-type) (new tile%
+                                  [position (cons (* pos-x 32) (* pos-y 32))]
+                                  [seethrough #t]
+                                  [collidable #f]
+                                  [image (read-bitmap "graphics/asphalt-4.bmp")]))
+          (else (error "No such tile: " tile-type))))                                        
       
       (let ((tile-matrix (new matrix% [rows 32] [columns 32]))
             (tile-num 0))
@@ -38,6 +58,7 @@
       (cdr (assq num level-list)))
     
 
+    
     
     
     
@@ -68,10 +89,10 @@
                    1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
                    1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 0 0 0 0 0 0 0 0 0 0 1
                    1 0 0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
-                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
-                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
-                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
-                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 4 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 4 5 4 5 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+                   1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 7 6 7 0 0 0 0 0 0 0 0 0 0 0 0 0 1
                    1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
                    1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
                    1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1

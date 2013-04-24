@@ -10,9 +10,8 @@
       (parameterize ((current-eventspace aux-eventspace))
         (queue-callback
          (lambda ()
-           (send *interaction* new-key-event (send key-event get-key-code))
-           (send *interaction* new-key-release-event (send key-event get-key-release-code))
-           (refresh)))))
+           (send *interaction* new-key-event (send key-event get-key-code) (send key-event get-shift-down))
+           (send *interaction* new-key-release-event (send key-event get-key-release-code))))))
     
     ;Mouse events
     (define/override (on-event mouse-event)
@@ -21,8 +20,7 @@
          (lambda () 
            (send *interaction* new-mouse-event (send mouse-event get-event-type))
            (send *interaction* new-mouse-position (cons (send mouse-event get-x)
-                                                        (send mouse-event get-y)))
-           (refresh)))))
+                                                        (send mouse-event get-y)))))))
     
     (super-new)))
 

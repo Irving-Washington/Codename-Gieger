@@ -3,18 +3,19 @@
   (class object%
     
     ;Keyboard controls
-    (define/public (new-key-event key-code)
+    (define/public (new-key-event key-code shift-code)
       (cond       
         ;Movement key-events
+        
         ((eq? key-code #\w) (send *player* set-velocity-y! -3))
         ((eq? key-code #\a) (send *player* set-velocity-x! -3))
         ((eq? key-code #\s) (send *player* set-velocity-y! 3))
-        ((eq? key-code #\d) (send *player* set-velocity-x! 3))      
+        ((eq? key-code #\d) (send *player* set-velocity-x! 3))  
         ;Weapon key-events
         ((eq? key-code #\r) (send *player* firearm-reload))
         ((eq? key-code #\f) (send *player* increase-health! -50))       
         ;Pause menu
-        ((eq? key-code 'esc) (send *game-loop* pause))))
+        ((eq? key-code 'escape) (send *game-loop* pause))))
     
     (define/public (new-key-release-event key-release)
       (cond 

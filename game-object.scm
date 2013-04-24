@@ -59,11 +59,12 @@
     
     ;Draw method
     (define/public (draw level-buffer)
-      (send level-buffer translate (+ size (mcar position)) (+ size (mcdr position)))
-      (send level-buffer rotate angle)
-      (send level-buffer draw-bitmap image (- size) (- size))
-      (send level-buffer rotate (- angle))
-      (send level-buffer translate (- (+ size (mcar position))) (- (+ size (mcdr position)))))
+      (let ((temp-angle angle))
+        (send level-buffer translate (+ size (mcar position)) (+ size (mcdr position)))
+        (send level-buffer rotate temp-angle)
+        (send level-buffer draw-bitmap image (- size) (- size))
+        (send level-buffer rotate (- temp-angle))
+        (send level-buffer translate (- (+ size (mcar position))) (- (+ size (mcdr position))))))
     
     
     

@@ -91,7 +91,7 @@
       (if (and (= 0 (mcar velocity)) (= 0 (mcdr velocity)))
           (set-image! (send animation-package get-idle-image))
           (let ((delta-time (- (current-milliseconds) animation-time)))
-            (unless (< delta-time 250)
+            (unless (< delta-time 350)
               (begin
                 (set-image! (send animation-package get-next-move-image))
                 (set! animation-time (current-milliseconds)))))))
