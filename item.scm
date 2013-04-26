@@ -7,6 +7,9 @@
     (init-field current-agent)
     (field (zero-velocity (mcons 0 0)))
 
+    (field (animation-package (get-animation-package 'player-pistol)))
+    
+    (define/public (get-animation) animation-package)
     
     ;Current agent methods
     (define/public (get-current-agent) current-agent)

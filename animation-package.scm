@@ -4,18 +4,17 @@
     
     (init-field idle-image
                 move-image-pair
-                use-image)
+                item-use-image
+                item-secondary-image
+                death-animation)
     
-    (field (death-animation
-            (list (read-bitmap "graphics/litvinenko-dead1.png")
-                  (read-bitmap "graphics/litvinenko-dead2.png")
-                  (read-bitmap "graphics/litvinenko-dead3.png"))))
     
-    (field (move-switcher #f))
-    (field (death-switcher 0))
+    (field (move-switcher #f)
+           (death-switcher 0))
     
     (define/public (get-idle-image) idle-image)
-    (define/public (get-use-image) use-image)
+    (define/public (get-item-use-image) item-use-image)
+    (define/public (get-item-secondary-image) item-secondary-image)
     
     (define/public (get-next-move-image) 
       (set! move-switcher (not move-switcher))

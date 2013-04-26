@@ -18,7 +18,10 @@
     (field (inventory (mcons #f #f)))
     (field (target-coordinates (cons 0 0)))
     (field (dead #f))
-    (field (animation-time 0))
+    (field (use-animation-time 0))
+    (field (move-animation-time 0))
+    (field (used-item #f))
+    (field (default-animation-package animation-package))
     
     (define/public (get-team) team)
     
@@ -68,15 +71,18 @@
             ((not (mcdr inventory)) (set-mcdr! inventory item))
             (else (item-throw)
                   (set-mcar! inventory item)))
-      (send item set-current-agent! this))
+      (send item set-current-agent! this)
+      (change-animation-package!))
     
     (define/public (item-use)
       (unless dead
         (unless (not (mcar inventory))
-          (send (mcar inventory) use))))
+          (send (mcar inventory) use)
+          (set! used-item #t))))
     
     (define/public (item-remove-primary!)
-      (set-mcar! inventory #f))
+      (set-mcar! inventory #f)
+      (change-animation-package!))
     
     (define/public (item-remove-secondary!)
       (set-mcdr! inventory #f))
@@ -99,41 +105,61 @@
     (define/public (item-switch!)
       (let ((temp (mcar inventory)))
         (set-mcar! inventory (mcdr inventory))
-        (set-mcdr! inventory temp)))
+        (set-mcdr! inventory temp))
+      (change-animation-package!))
     
     ;Move method
     (define/override (move!)
       (unless dead
-        (move-animation)
         (set-aim-target! target-coordinates)
         (set-mcar! position (+ (mcar position) (mcar velocity)))
         (set-mcdr! position (+ (mcdr position) (mcdr velocity)))))
     
+    ;Animation methods
     (define/public (move-animation)
-      (if (and (= 0 (mcar velocity)) (= 0 (mcdr velocity)))
-          (set-image! (send animation-package get-idle-image))
-          (let ((delta-time (- (current-milliseconds) animation-time)))
-            (unless (< delta-time 350)
-              (begin
-                (set-image! (send animation-package get-next-move-image))
-                (set! animation-time (current-milliseconds)))))))
+      (unless (< (- (current-milliseconds) move-animation-time) 350)
+        (if (and (= 0 (mcar velocity)) (= 0 (mcdr velocity)))
+            (set-image! (send animation-package get-idle-image))
+            (set-image! (send animation-package get-next-move-image)))
+        (set! move-animation-time (current-milliseconds))))
+    
+    (define/public (change-animation-package!)
+      (if (mcar inventory)
+          (set! animation-package (send (mcar inventory) get-animation))
+          (set! animation-package default-animation-package)))
+    
+    (define/private (use-animation)
+      (unless (< (- (current-milliseconds) use-animation-time) 100)
+        (if used-item
+            (begin
+              (set-image! (send animation-package get-item-use-image))
+              (set! used-item #f))
+            (move-animation))
+        (set! use-animation-time (current-milliseconds))))
     
     ;Die method
     (define/public (die)
       (set! dead #t)
-      (set! animation-time 0)
+      (set! move-animation-time 0)
       
       (define (death-animation-loop delta-time stage)
         (cond
           ((= stage 3)
            (void))
           ((< delta-time 300)
-           (death-animation-loop (- (current-milliseconds) animation-time) stage))
+           (death-animation-loop (- (current-milliseconds) move-animation-time) stage))
           (else                        
            (set-image! (send animation-package get-next-death-image))
-           (set! animation-time (current-milliseconds))
+           (set! move-animation-time (current-milliseconds))
            (death-animation-loop 0 (+ stage 1)))))
       
       (death-animation-loop 0 0))
+    
+    ;Draw method
+    (define/override (draw level-buffer)
+      (unless dead
+        (move-animation)
+        (use-animation))
+      (super draw level-buffer))
     
     (super-new)))

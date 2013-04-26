@@ -16,6 +16,7 @@
 (load "input-listener.scm")
 (load "level-loader.scm")
 (load "animation-package.scm")
+(load "animation-package-list.scm")
 
 (define *level-loader* (new level-loader%))
 (define *level* (new level% [tile-matrix (send *level-loader* load-level 1)]))
@@ -23,32 +24,28 @@
 
 (define *player* (new player%
                       [position (mcons 32 32)]
-                      [image (read-bitmap "graphics/litvinenko-armed.png")]
+                      [image (read-bitmap "graphics/player-unarmed-idle.png")]
                       [team 'kgb]
-                      [animation-package (new animation-package%
-                                              [idle-image (read-bitmap "graphics/litvinenko-still.png")]
-                                              [move-image-pair (cons 
-                                                                (read-bitmap "graphics/litvinenko-right-hand-forward.png")
-                                                                (read-bitmap "graphics/litvinenko-left-hand-forward.png"))]
-                                              [use-image (read-bitmap "graphics/litvinenko-still.png")])]))
+                      [animation-package (get-animation-package 'player-unarmed)]))
+
 (define *gun1* (new firearm%
            [ammunition 7]
            [base-damage 70]
            [current-agent #f]
            [position (mcons 100 100)]
-           [image (read-bitmap "graphics/gun-1.png")]))  
+           [image (read-bitmap "graphics/pistol-1.png")]))  
 (define *gun2* (new firearm%
            [ammunition 7]
            [base-damage 70]
            [current-agent #f]
            [position (mcons 510 100)]
-           [image (read-bitmap "graphics/gun-1.png")])) 
+           [image (read-bitmap "graphics/pistol-1.png")])) 
 (define *gun3* (new firearm%
            [ammunition 7]
            [base-damage 70]
            [current-agent #f]
            [position (mcons 150 250)]
-           [image (read-bitmap "graphics/gun-1.png")])) 
+           [image (read-bitmap "graphics/pistol-1.png")])) 
 
 
       
