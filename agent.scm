@@ -66,7 +66,9 @@
     (define/public (item-add! item)
       (cond ((not (mcar inventory)) (set-mcar! inventory item))
             ((not (mcdr inventory)) (set-mcdr! inventory item))
-            (else (set-mcar! inventory item))))
+            (else (item-throw)
+                  (set-mcar! inventory item)))
+      (send item set-current-agent! this))
     
     (define/public (item-use)
       (unless dead
@@ -78,6 +80,26 @@
     
     (define/public (item-remove-secondary!)
       (set-mcdr! inventory #f))
+    
+    (define/public (item-throw)
+      (unless dead
+        (unless (not (mcar inventory))
+          (begin
+            (new projectile% 
+                 [projectile-size 8]
+                 [start-velocity (get-projectile-velocity 25)]
+                 [slow-down #t]
+                 [destroy-on-impact #f]
+                 [current-agent #f]
+                 [position (get-projectile-position)]
+                 [image (send (mcar inventory) get-image)]
+                 [stationary-item (mcar inventory)])
+            (item-remove-primary!)))))
+    
+    (define/public (item-switch!)
+      (let ((temp (mcar inventory)))
+        (set-mcar! inventory (mcdr inventory))
+        (set-mcdr! inventory temp)))
     
     ;Move method
     (define/override (move!)

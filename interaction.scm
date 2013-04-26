@@ -13,7 +13,10 @@
         ((eq? key-code #\d) (send *player* set-velocity-x! 3))  
         ;Weapon key-events
         ((eq? key-code #\r) (send *player* firearm-reload))
-        ((eq? key-code #\f) (send *player* increase-health! -50))       
+        ((eq? key-code #\f) (send *player* increase-health! -50))
+        ((eq? key-code #\q) (send *player* item-switch!))
+        ;Interaction event
+        ((eq? key-code #\e) (send *player* world-interact)) 
         ;Pause menu
         ((eq? key-code 'escape) (send *game-loop* pause))))
     

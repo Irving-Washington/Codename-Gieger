@@ -6,6 +6,7 @@
                    velocity)
     (init-field current-agent)
     (field (zero-velocity (mcons 0 0)))
+
     
     ;Current agent methods
     (define/public (get-current-agent) current-agent)

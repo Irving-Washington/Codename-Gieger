@@ -20,10 +20,21 @@
     (define/public (add-game-object! object)
       (set! game-objects (mcons object game-objects)))
     
+    (define/public (get-game-objects) game-objects)
+    
     (define/public (object-counter) 
       (begin
         (set! object-count (+ 1 object-count))
         (- object-count 1)))
+    
+    (define/public (get-proximity-object agent-coordinates game-objects)
+      (cond 
+        ((null? game-objects) #f)
+        ((and (not (is-a? (mcar game-objects) player%))
+                  (< (abs (- (mcar (send (mcar game-objects) get-position)) (mcar agent-coordinates))) 32)
+                  (< (abs (- (mcdr (send (mcar game-objects) get-position)) (mcdr agent-coordinates))) 32))
+             (mcar game-objects))
+        (else (get-proximity-object agent-coordinates (mcdr game-objects)))))
     
     (define/public (delete-game-object! object)
       (define (delete-helper old-game-objects new-game-objects)
@@ -33,7 +44,14 @@
            (delete-helper (mcdr old-game-objects) new-game-objects))
           (else
            (delete-helper (mcdr old-game-objects) (mcons (mcar old-game-objects) new-game-objects)))))
-      (set! game-objects (delete-helper game-objects '())))  
+      (set! game-objects (delete-helper game-objects '())))
+    
+    (define/public (agent-interact agent)
+      (let ((proximity-object (get-proximity-object (send agent get-position) game-objects)))
+        (cond ((is-a? proximity-object firearm%) 
+               (send agent item-add! proximity-object)
+               (delete-game-object! proximity-object))
+              (else (void)))))
 
     ;Load and draw level background
     (define/public (draw-level-buffer)

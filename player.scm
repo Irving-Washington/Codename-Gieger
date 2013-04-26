@@ -6,25 +6,7 @@
     (inherit get-projectile-position
              get-projectile-velocity
              item-remove-primary!)
-    ;Item methods
-    (define/public (item-switch! item)
-      (let ((temp (mcar inventory)))
-        (set-mcar! inventory (mcdr inventory))
-        (set-mcdr! inventory temp)))
-    
-    (define/public (item-throw)
-      (unless (not (mcar inventory))
-        (begin
-          (new projectile% 
-               [projectile-size 8]
-               [start-velocity (get-projectile-velocity 25)]
-               [slow-down #t]
-               [destroy-on-impact #f]
-               [current-agent #f]
-               [position (get-projectile-position)]
-               [image (send (mcar inventory) get-image)])
-          (item-remove-primary!))))
-    
+
     ;Firarm methods
     (define/public (firearm-reload)
       (unless (not (is-a? (mcar inventory) firearm%))
@@ -36,6 +18,6 @@
     
     ;World interaction
     (define/public (world-interact)
-      (void))
+      (send *level* agent-interact this))
     
     (super-new)))

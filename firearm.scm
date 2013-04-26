@@ -16,7 +16,8 @@
                  [destroy-on-impact #t]
                  [current-agent #f]
                  [position (send current-agent get-projectile-position)]
-                 [image (read-bitmap "graphics/bullet-1.bmp")])
+                 [image (read-bitmap "graphics/bullet-1.bmp")]
+                 [stationary-item #f])
             (set! ammunition (- ammunition 1)))))
     
     ;Reload method

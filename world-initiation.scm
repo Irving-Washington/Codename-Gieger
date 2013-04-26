@@ -31,16 +31,26 @@
                                                                 (read-bitmap "graphics/litvinenko-right-hand-forward.png")
                                                                 (read-bitmap "graphics/litvinenko-left-hand-forward.png"))]
                                               [use-image (read-bitmap "graphics/litvinenko-still.png")])]))
-                                              
-
-(send *player*
-      item-add!
-      (new firearm%
-           [ammunition 105]
+(define *gun1* (new firearm%
+           [ammunition 7]
            [base-damage 70]
-           [current-agent *player*]
-           [position (send *player* get-position)]
-           [image (read-bitmap "graphics/gun-1.png")]))
+           [current-agent #f]
+           [position (mcons 100 100)]
+           [image (read-bitmap "graphics/gun-1.png")]))  
+(define *gun2* (new firearm%
+           [ammunition 7]
+           [base-damage 70]
+           [current-agent #f]
+           [position (mcons 510 100)]
+           [image (read-bitmap "graphics/gun-1.png")])) 
+(define *gun3* (new firearm%
+           [ammunition 7]
+           [base-damage 70]
+           [current-agent #f]
+           [position (mcons 150 250)]
+           [image (read-bitmap "graphics/gun-1.png")])) 
+
+
       
 
 (define *window* (new frame%

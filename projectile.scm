@@ -6,11 +6,15 @@
     (init-field start-velocity
                 projectile-size
                 slow-down
-                destroy-on-impact)
+                destroy-on-impact
+                stationary-item)
+    
+    
     
     (field (decimal-velocity (mcons (* 1.0 (mcar start-velocity)) (* 1.0 (mcdr start-velocity)))))
     
-    (inherit get-future-position)
+    (inherit get-future-position
+             delete!)
     
     (inherit-field velocity
                    size
@@ -42,7 +46,11 @@
       (unless (not (and (not (equal? velocity zero-velocity)) slow-down))
         (if (and (< (abs (mcdr decimal-velocity)) 2) (< (abs (mcar decimal-velocity)) 2))
             (begin (set-mcar! decimal-velocity 0)
-                   (set-mcdr! decimal-velocity 0))
+                   (set-mcdr! decimal-velocity 0)
+                   (send *level* add-game-object! stationary-item)
+                   (send stationary-item set-position! position)
+                   (send stationary-item set-current-agent! #f)                   
+                   (delete!))
             (begin (set-mcar! decimal-velocity (* 0.96 (mcar decimal-velocity)))
                    (set-mcdr! decimal-velocity (* 0.96 (mcdr decimal-velocity)))))
         (set-mcar! velocity (round (mcar decimal-velocity)))

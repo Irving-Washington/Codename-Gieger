@@ -21,6 +21,9 @@
     (define/public (move!)
       (void))
     
+    (define/public (set-position! new-position)
+      (set! position new-position))
+    
     (define/public (get-future-position)
       (cond
         ((and (>= (mcar velocity) 0) (>= (mcdr velocity) 0))
@@ -71,7 +74,7 @@
     
     ;Delete method
     (define/public (delete!)
-      (send *level* delete-game-object! name))
+      (send *level* delete-game-object! this))
     
     (send *level* add-game-object! this)
     
