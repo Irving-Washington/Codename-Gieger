@@ -32,7 +32,7 @@
            [ammunition 7]
            [base-damage 70]
            [current-agent #f]
-           [position (mcons 100 100)]
+           [position (mcons 32 32)]
            [image (read-bitmap "graphics/pistol-1.png")]))  
 (define *gun2* (new firearm%
            [ammunition 7]
@@ -41,7 +41,7 @@
            [position (mcons 510 100)]
            [image (read-bitmap "graphics/pistol-1.png")])) 
 (define *gun3* (new firearm%
-           [ammunition 7]
+           [ammunition 100]
            [base-damage 70]
            [current-agent #f]
            [position (mcons 150 250)]

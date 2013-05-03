@@ -10,10 +10,10 @@
       (if (> ammunition 0)
           (begin 
             (new projectile%
-                 [start-velocity (send current-agent get-projectile-velocity 30)]
+                 [start-velocity (send current-agent get-projectile-velocity 8)]
                  [projectile-size 2]
                  [slow-down #f]
-                 [destroy-on-impact #t]
+                 [destroy-on-impact #f]
                  [current-agent #f]
                  [position (send current-agent get-projectile-position)]
                  [image (read-bitmap "graphics/bullet-1.bmp")]

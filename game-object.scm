@@ -4,10 +4,12 @@
     (init-field position
                 image)
     
-    (field (angle 0))
-    (field (size 16))
-    (field (velocity (mcons 0 0)))
-    (field (max-velocity 4))
+    (field (angle 0)
+           (size 32)
+           (half-size 16)
+           (velocity (mcons 0 0))
+           (max-velocity 4)
+           (stationary #f))
 
     (define/public (get-angle) angle)
     
@@ -21,19 +23,32 @@
     (define/public (move!)
       (void))
     
+    (define/public (get-stationary) stationary)
+    
+    (define/public (set-stationary!)
+      (set! stationary #f))
+    
     (define/public (set-position! new-position)
       (set! position new-position))
     
-    (define/public (get-future-position)
-      (cond
-        ((and (>= (mcar velocity) 0) (>= (mcdr velocity) 0))
-         (mcons (+ (mcar position) (* 2 size) (mcar velocity)) (+ (mcdr position) (* 2 size) (mcdr velocity))))
-        ((and (>= (mcar velocity) 0) (<= (mcdr velocity) 0))
-         (mcons (+ (mcar position) (* 2 size) (mcar velocity)) (+ (mcdr position) (mcdr velocity))))
-        ((and (<= (mcar velocity) 0) (<= (mcdr velocity) 0))
-         (mcons (+ (mcar position) (mcar velocity)) (+ (mcdr position) (mcdr velocity))))
-        ((and (<= (mcar velocity) 0) (>= (mcdr velocity) 0))
-         (mcons (+ (mcar position) (mcar velocity)) (+ (mcdr position) (* 2 size) (mcdr velocity))))))
+    (define/public (get-future-position divisor)
+      (mcons (+ (mcar position) (quotient (mcar velocity) divisor))
+             (+ (mcdr position) (quotient (mcdr velocity) divisor))))
+    
+    (define/public (get-future-corner-positions)
+      (list (cons
+              (+ (mcar position) (mcar velocity))
+              (+ (mcdr position) (mcdr velocity)))
+             (cons
+              (+ (mcar position) (mcar velocity) size)
+              (+ (mcdr position) (mcdr velocity)))
+             (cons
+              (+ (mcar position) (mcar velocity))
+              (+ (mcdr position) (mcdr velocity) size))
+             (cons
+              (+ (mcar position) (mcar velocity) size)
+              (+ (mcdr position) (mcdr velocity) size))))
+       
     
     (define/public (get-velocity) velocity)
     (define/public (set-velocity! new-velocity)
@@ -55,6 +70,11 @@
       (unless (>= (abs (+ delta-value (mcdr velocity))) max-velocity)
         (set-mcdr! velocity (+ (mcdr velocity) delta-value))))
     
+    (define/public (divide-velocity! divisor)
+      (set! velocity
+            (mcons (round (/ (mcar velocity) divisor))
+                   (round (/ (mcdr velocity) divisor)))))
+    
     ;Image method
     (define/public (get-image) image)
     (define/public (set-image! new-image)
@@ -63,11 +83,11 @@
     ;Draw method
     (define/public (draw level-buffer)
       (let ((temp-angle angle))
-        (send level-buffer translate (+ size (mcar position)) (+ size (mcdr position)))
+        (send level-buffer translate (+ half-size (mcar position)) (+ half-size (mcdr position)))
         (send level-buffer rotate temp-angle)
-        (send level-buffer draw-bitmap image (- size) (- size))
+        (send level-buffer draw-bitmap image (- half-size) (- half-size))
         (send level-buffer rotate (- temp-angle))
-        (send level-buffer translate (- (+ size (mcar position))) (- (+ size (mcdr position))))))
+        (send level-buffer translate (- (+ half-size (mcar position))) (- (+ half-size (mcdr position))))))
     
     
     

@@ -31,8 +31,9 @@
        (quotient (mcdr pixel-position) 32)
        (quotient (mcar pixel-position) 32)))
     
+    
     (define/public (bounce!)
-      (if (= (mcar (pixel-to-tile position)) (mcar (pixel-to-tile (get-future-position))))
+      (if (= (mcar (pixel-to-tile position)) (mcar (pixel-to-tile (get-future-position 8))))
           (begin (set-mcar! velocity (- (mcar velocity)))
                  (set-mcar! decimal-velocity (- (mcar decimal-velocity))))
           (begin (set-mcdr! velocity (- (mcdr velocity)))

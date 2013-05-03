@@ -5,6 +5,7 @@
     (init-field tile-matrix)
     
     (field (game-objects (mlist)))
+    
     (field (object-count 0))
     
     (field (level-bitmap (make-bitmap 1024 1024)))
@@ -70,38 +71,68 @@
     
     (define/public (move-objects)
       (mfor-each (lambda (object)
-                   (cond 
-                     ((and (collision? object)
-                           (is-a? object projectile%) 
-                           (send object destroy-on-impact?))
-                      (delete-game-object! object))
-                     ((and (collision? object)
-                           (is-a? object projectile%)
-                           (not (send object destroy-on-impact?)))
-                      (send object bounce!))
-                     ((and (collision? object)
-                           (is-a? object agent%))
-                      (void))
-                     (else
-                      (send object move!))))
+                   (unless (send object get-stationary)
+                     (cond 
+                       ((is-a? object projectile%)
+                        (projectile-collision object))
+                       ((is-a? object agent%)
+                        (agent-collision object))
+                       (else
+                        (send object move!)))))
                  game-objects))
+
     
     (define/private (pixel-to-tile pixel-position)
       (mcons
        (quotient (mcdr pixel-position) 32)
        (quotient (mcar pixel-position) 32)))
     
+    (define/private (agent-collision agent)
+      (let ((future-corners (send agent get-future-corner-positions)))
+        (unless (not (null? (filter (lambda (corner) (send (send tile-matrix
+                                                                 get-element
+                                                                 (quotient (cdr corner) 32)
+                                                                 (quotient (car corner) 32))
+                                                           collidable?))
+                                    future-corners)))
+          (send agent move!))))
+    
+    
+    (define/private (projectile-collision projectile) 
+      
+      (define (projectile-collision-helper divisor)
+        (let ((future-position (send projectile get-future-position divisor)))
+          (send (send tile-matrix
+                      get-element
+                      (quotient (mcdr future-position) 32)
+                      (quotient (mcar future-position) 32))
+                collidable?)))
+
+      (cond
+        ((not (projectile-collision-helper 1))
+         (send projectile move!))
+        ((not (projectile-collision-helper 2))
+         (send projectile set-position! (send projectile get-future-position 2)))
+        ((not (projectile-collision-helper 4))
+         (send projectile set-position! (send projectile get-future-position 4)))
+        (else
+         (if (send projectile destroy-on-impact?)
+             (delete-game-object! projectile)
+             (send projectile bounce!)))))
+    
+    
+
+    
     (define/public (collision? object)
       (let ((tile-pos (pixel-to-tile (send object get-future-position))))
-            (if (send (send tile-matrix
-                            get-element
-                            (mcar tile-pos)
-                            (mcdr tile-pos))
-                      collidable?)
-                #t
-                #f)))
-        
-        
+        (display tile-pos)
+        (send (send tile-matrix
+                    get-element
+                    (mcar tile-pos)
+                    (mcdr tile-pos))
+              collidable?)))
+    
+    
     (super-new)))
 
 
