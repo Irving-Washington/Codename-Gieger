@@ -7,4 +7,4 @@
                             (send *level* move-objects)
                             (send *level* draw-objects-buffer)
                             (send *canvas* refresh)))]))
-(send *game-loop* start 8)
+(send *game-loop* start 16)

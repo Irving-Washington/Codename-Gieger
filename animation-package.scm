@@ -27,7 +27,7 @@
       (cond
         ((= 1 death-switcher) (car death-animation))
         ((= 2 death-switcher) (cadr death-animation))
-        ((= 3 death-switcher) (caddr death-animation))))
+        (else (caddr death-animation))))
         
     
     (super-new)))

@@ -4,10 +4,11 @@
     
     (inherit-field position
                    velocity)
-    (init-field current-agent)
-    (field (zero-velocity (mcons 0 0)))
-
-    (field (animation-package (get-animation-package 'player-pistol)))
+    
+    (init-field current-agent
+                animation-package)
+    
+    (field (zero-velocity (mcons 0.0 0.0)))
     
     (define/public (get-animation) animation-package)
     
@@ -22,7 +23,7 @@
     
     (define/override (move!)
       (unless (equal? velocity zero-velocity)
-        (set-mcar! position (+ (mcar position) (mcar velocity)))
-        (set-mcdr! position (+ (mcdr position) (mcdr velocity)))))
+        (set-mcar! position (+ (mcar position) (round (mcar velocity))))
+        (set-mcdr! position (+ (mcdr position) (round (mcdr velocity))))))
       
     (super-new)))

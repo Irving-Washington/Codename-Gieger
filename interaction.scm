@@ -7,10 +7,10 @@
       (cond       
         ;Movement key-events
         
-        ((eq? key-code #\w) (send *player* set-velocity-y! -2))
-        ((eq? key-code #\a) (send *player* set-velocity-x! -2))
-        ((eq? key-code #\s) (send *player* set-velocity-y! 2))
-        ((eq? key-code #\d) (send *player* set-velocity-x! 2))  
+        ((eq? key-code #\w) (send *player* set-velocity-y! -3))
+        ((eq? key-code #\a) (send *player* set-velocity-x! -3))
+        ((eq? key-code #\s) (send *player* set-velocity-y! 3))
+        ((eq? key-code #\d) (send *player* set-velocity-x! 3))  
         ;Weapon key-events
         ((eq? key-code #\r) (send *player* firearm-reload))
         ((eq? key-code #\f) (send *player* increase-health! -50))

@@ -7,8 +7,8 @@
     (field (angle 0)
            (size 32)
            (half-size 16)
-           (velocity (mcons 0 0))
-           (max-velocity 4)
+           (velocity (mcons 0.0 0.0))
+           (max-velocity 400)
            (stationary #f))
 
     (define/public (get-angle) angle)
@@ -19,21 +19,25 @@
     ;Position method
     (define/public (get-position) position)
     
+    (define/public (get-center-position)
+      (mcons (+ (mcar position) half-size)
+             (+ (mcdr position) half-size)))
+    
     ;Movement methods
     (define/public (move!)
       (void))
     
     (define/public (get-stationary) stationary)
     
-    (define/public (set-stationary!)
-      (set! stationary #f))
+    (define/public (set-stationary! value)
+      (set! stationary value))
     
     (define/public (set-position! new-position)
       (set! position new-position))
     
     (define/public (get-future-position divisor)
-      (mcons (+ (mcar position) (quotient (mcar velocity) divisor))
-             (+ (mcdr position) (quotient (mcdr velocity) divisor))))
+      (mcons (+ (mcar position) (round (/ (mcar velocity) divisor)))
+             (+ (mcdr position) (round (/ (mcdr velocity) divisor)))))
     
     (define/public (get-future-corner-positions)
       (list (cons

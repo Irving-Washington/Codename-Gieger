@@ -17,38 +17,45 @@
 (load "level-loader.scm")
 (load "animation-package.scm")
 (load "animation-package-list.scm")
+(load "decal.scm")
+(load "npc.scm")
 
 (define *level-loader* (new level-loader%))
 (define *level* (new level% [tile-matrix (send *level-loader* load-level 1)]))
 (send *level* draw-level-buffer)
 
+(load "item-list.scm")
+
 (define *player* (new player%
                       [position (mcons 32 32)]
-                      [image (read-bitmap "graphics/player-unarmed-idle.png")]
+                      [image (read-bitmap "graphics/kgb-unarmed-idle.png")]
                       [team 'kgb]
-                      [animation-package (get-animation-package 'player-unarmed)]))
+                      [animation-package (get-animation-package 'kgb-unarmed)]))
 
-(define *gun1* (new firearm%
-           [ammunition 7]
-           [base-damage 70]
-           [current-agent #f]
-           [position (mcons 32 32)]
-           [image (read-bitmap "graphics/pistol-1.png")]))  
-(define *gun2* (new firearm%
-           [ammunition 7]
-           [base-damage 70]
-           [current-agent #f]
-           [position (mcons 510 100)]
-           [image (read-bitmap "graphics/pistol-1.png")])) 
-(define *gun3* (new firearm%
-           [ammunition 100]
-           [base-damage 70]
-           [current-agent #f]
-           [position (mcons 150 250)]
-           [image (read-bitmap "graphics/pistol-1.png")])) 
+(spawn-item 'mp-133 (mcons 150 150))
+(give-item 'makarov-pb *player*)
 
+(new npc%
+     [position (mcons 940 64)]
+     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+     [team 'cia]
+     [animation-package (get-animation-package 'cia-unarmed)])
+(new npc%
+     [position (mcons 500 500)]
+     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+     [team 'cia]
+     [animation-package (get-animation-package 'cia-unarmed)])
+(new npc%
+     [position (mcons 250 800)]
+     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+     [team 'cia]
+     [animation-package (get-animation-package 'cia-unarmed)])
+(new npc%
+     [position (mcons 550 500)]
+     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+     [team 'cia]
+     [animation-package (get-animation-package 'cia-unarmed)])
 
-      
 
 (define *window* (new frame%
                       [width 1064]

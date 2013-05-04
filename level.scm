@@ -28,14 +28,24 @@
         (set! object-count (+ 1 object-count))
         (- object-count 1)))
     
-    (define/public (get-proximity-object agent-coordinates game-objects)
-      (cond 
-        ((null? game-objects) #f)
-        ((and (not (is-a? (mcar game-objects) player%))
-                  (< (abs (- (mcar (send (mcar game-objects) get-position)) (mcar agent-coordinates))) 32)
-                  (< (abs (- (mcdr (send (mcar game-objects) get-position)) (mcdr agent-coordinates))) 32))
-             (mcar game-objects))
-        (else (get-proximity-object agent-coordinates (mcdr game-objects)))))
+    
+    (define/public (get-proximity-object coordinates size exclusion-types object-list)
+      (if (null? object-list)
+          #f
+          (let* ((current-object (mcar object-list))
+                (delta-x (- (mcar coordinates) (mcar (send current-object get-position))))
+                (delta-y (- (mcdr coordinates) (mcdr (send current-object get-position)))))
+            
+            
+            (if (and (not (is-a? current-object (car exclusion-types)))
+                     (not (is-a? current-object (cdr exclusion-types)))
+                     (>= delta-x 0)
+                     (<= delta-x size)
+                     (>= delta-y 0)
+                     (<= delta-y size))
+                current-object   
+                (get-proximity-object coordinates size exclusion-types (mcdr object-list))))))
+    
     
     (define/public (delete-game-object! object)
       (define (delete-helper old-game-objects new-game-objects)
@@ -47,8 +57,9 @@
            (delete-helper (mcdr old-game-objects) (mcons (mcar old-game-objects) new-game-objects)))))
       (set! game-objects (delete-helper game-objects '())))
     
+    
     (define/public (agent-interact agent)
-      (let ((proximity-object (get-proximity-object (send agent get-position) game-objects)))
+      (let ((proximity-object (get-proximity-object (send agent get-center-position) 32 (cons agent% decal%) game-objects)))
         (cond ((is-a? proximity-object firearm%) 
                (send agent item-add! proximity-object)
                (delete-game-object! proximity-object))
@@ -63,11 +74,13 @@
                               row))
                  (send tile-matrix get-matrix-representation)))
         
+    
     (define/public (draw-objects-buffer)
       (send objects-buffer draw-bitmap level-bitmap 0 0)
       (mfor-each (lambda (object)
                    (send object draw objects-buffer))
                  game-objects))
+    
     
     (define/public (move-objects)
       (mfor-each (lambda (object)
@@ -98,40 +111,37 @@
           (send agent move!))))
     
     
-    (define/private (projectile-collision projectile) 
-      
-      (define (projectile-collision-helper divisor)
-        (let ((future-position (send projectile get-future-position divisor)))
-          (send (send tile-matrix
-                      get-element
-                      (quotient (mcdr future-position) 32)
-                      (quotient (mcar future-position) 32))
-                collidable?)))
-
-      (cond
-        ((not (projectile-collision-helper 1))
-         (send projectile move!))
-        ((not (projectile-collision-helper 2))
-         (send projectile set-position! (send projectile get-future-position 2)))
-        ((not (projectile-collision-helper 4))
-         (send projectile set-position! (send projectile get-future-position 4)))
-        (else
-         (if (send projectile destroy-on-impact?)
-             (delete-game-object! projectile)
-             (send projectile bounce!)))))
-    
-    
-
-    
-    (define/public (collision? object)
-      (let ((tile-pos (pixel-to-tile (send object get-future-position))))
-        (display tile-pos)
-        (send (send tile-matrix
-                    get-element
-                    (mcar tile-pos)
-                    (mcdr tile-pos))
-              collidable?)))
-    
+    (define/private (projectile-collision projectile)
+      (let ((collision-target #f)
+            (excluded-collisions (send projectile get-excluded-collisions)))
+        
+        (define (projectile-collision-helper divisor)
+          (let ((future-position (send projectile get-future-position divisor)))
+            (set! collision-target (send tile-matrix
+                                         get-element
+                                         (quotient (mcdr future-position) 32)
+                                         (quotient (mcar future-position) 32)))
+            (if (send collision-target collidable?)
+                #t
+                (begin
+                  (set! collision-target (get-proximity-object future-position 32 excluded-collisions game-objects))
+                  ;(display collision-target)
+                  (if collision-target
+                      #t
+                      #f)))))
+                  
+        
+        (cond
+          ((not (projectile-collision-helper 1))
+           (send projectile move!))
+          ((and #f (not (projectile-collision-helper 2)))
+           (send projectile set-position! (send projectile get-future-position 2))
+           (send projectile collide-with collision-target))
+          ((and #f (not (projectile-collision-helper 4)))
+           (send projectile set-position! (send projectile get-future-position 4))
+           (send projectile collide-with collision-target))
+          (else
+           (send projectile collide-with collision-target)))))
     
     (super-new)))
 
