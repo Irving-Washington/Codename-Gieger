@@ -175,7 +175,7 @@
     ;Die method
     (define/public (die)
       (set! dead #t)
-      (set! move-animation-time (current-milliseconds))
+      (set! move-animation-time 0)
       (set! use-animation-time (current-milliseconds)))
       
       ;(death-animation-loop 0 0))

@@ -47,8 +47,8 @@
       (define (blood-spray-helper num)
         (unless (>= num 7)           
           (new projectile%
-               [start-velocity (mcons (* num (- (random 300) -300 (* 30 num)) 0.0003 (mcar velocity))
-                                      (* num (- (random 300) -300 (* 30 num)) 0.0003 (mcdr velocity)))]
+               [start-velocity (mcons (* (+ num 3) (- (random 300) -300 (* 30 num)) 0.0002 (mcar velocity))
+                                      (* (+ num 3) (- (random 300) -300 (* 30 num)) 0.0002 (mcdr velocity)))]
                [projectile-size 2]
                [slow-down #t]
                [destroy-on-impact #f]
