@@ -8,10 +8,10 @@
     
     (field (object-count 0))
     
-    (field (level-bitmap (make-bitmap 1024 1024)))
+    (field (level-bitmap (make-bitmap 1536 768)))
     (field (level-load (new bitmap-dc% [bitmap level-bitmap])))
     
-    (field (buffered-bitmap (make-bitmap 1024 1024)))
+    (field (buffered-bitmap (make-bitmap 1536 768)))
     (field (objects-buffer (new bitmap-dc% [bitmap buffered-bitmap])))
     (send objects-buffer set-smoothing 'smoothed)
    

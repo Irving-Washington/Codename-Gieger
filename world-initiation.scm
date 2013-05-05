@@ -1,5 +1,7 @@
 (require racket/mpair)
 
+(define *level-size* (cons 24 48))
+
 (load "game-object.scm")
 (load "agent.scm")
 (load "item.scm")
@@ -20,6 +22,8 @@
 (load "decal.scm")
 (load "npc.scm")
 
+
+
 (define *level-loader* (new level-loader%))
 (define *level* (new level% [tile-matrix (send *level-loader* load-level 1)]))
 (send *level* draw-level-buffer)
@@ -36,30 +40,30 @@
 (give-item 'makarov-pb *player*)
 
 (new npc%
-     [position (mcons 940 64)]
+     [position (mcons 440 64)]
      [image (read-bitmap "graphics/cia-unarmed-idle.png")]
      [team 'cia]
      [animation-package (get-animation-package 'cia-unarmed)])
 (new npc%
-     [position (mcons 500 500)]
+     [position (mcons 200 600)]
      [image (read-bitmap "graphics/cia-unarmed-idle.png")]
      [team 'cia]
      [animation-package (get-animation-package 'cia-unarmed)])
 (new npc%
-     [position (mcons 250 800)]
+     [position (mcons 1050 600)]
      [image (read-bitmap "graphics/cia-unarmed-idle.png")]
      [team 'cia]
      [animation-package (get-animation-package 'cia-unarmed)])
 (new npc%
-     [position (mcons 550 500)]
+     [position (mcons 550 300)]
      [image (read-bitmap "graphics/cia-unarmed-idle.png")]
      [team 'cia]
      [animation-package (get-animation-package 'cia-unarmed)])
 
 
 (define *window* (new frame%
-                      [width 1064]
-                      [height 1064]
+                      [width 1550]
+                      [height 805]
                       [label "The Exclusion Zone"]))
 
 (define (*renderer* canvas dc)
