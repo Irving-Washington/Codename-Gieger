@@ -148,14 +148,35 @@
         (set! use-animation-time (current-milliseconds))))
     
     (define/public (death-animation)
-      (unless (< (- (current-milliseconds) move-animation-time) 300)
+      (unless (or (< (- (current-milliseconds) move-animation-time) 500) (> (- (current-milliseconds) use-animation-time) 3000))
         (set-image! (send animation-package get-next-death-image))
+        (define (blood-spray-helper num)
+        (unless (>= num 7)           
+          (new projectile%
+               [start-velocity (mcons (* (+ 7 num) (mcar (get-random-projectile-velocity 20)) 0.06) 
+                                      (* (+ 7 num) (mcdr (get-projectile-velocity 20)) 0.06))]
+               [projectile-size 2]
+               [slow-down #t]
+               [destroy-on-impact #f]
+               [current-agent #f]
+               [animation-package #f]
+               [position (mcons (+ 14 (mcar position))
+                                (+ 10 (mcdr position)))]
+               [image (read-bitmap "graphics/blood-1.png")]
+               [stationary-item (new decal%
+                                     [position (mcons 0 0)]
+                                     [image (read-bitmap "graphics/blood-1.png")])]
+               [projectile-damage 0]
+               [excluded-collisions (cons game-object% decal%)])
+          (blood-spray-helper (+ num 1))))
+        (blood-spray-helper 1)
         (set! move-animation-time (current-milliseconds))))
     
     ;Die method
     (define/public (die)
       (set! dead #t)
-      (set! move-animation-time (current-milliseconds)))
+      (set! move-animation-time (current-milliseconds))
+      (set! use-animation-time (current-milliseconds)))
       
       ;(death-animation-loop 0 0))
     

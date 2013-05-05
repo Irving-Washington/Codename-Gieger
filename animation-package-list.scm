@@ -8,9 +8,9 @@
                                 (read-bitmap "graphics/kgb-unarmed-move2.png"))]
               [item-use-image (read-bitmap "graphics/kgb-unarmed-idle.png")]
               [item-secondary-image (read-bitmap "graphics/kgb-unarmed-idle.png")]
-              [death-animation (list (read-bitmap "graphics/kgb-death1.png")
-                                     (read-bitmap "graphics/kgb-death2.png")
-                                     (read-bitmap "graphics/kgb-death3.png"))]))
+              [death-animation (list (read-bitmap "graphics/kgb-dead1.png")
+                                     (read-bitmap "graphics/kgb-dead2.png")
+                                     (read-bitmap "graphics/kgb-dead3.png"))]))
    (cons 'kgb-pistol
          (new animation-package%
               [idle-image (read-bitmap "graphics/kgb-pistol-idle.png")]
@@ -19,9 +19,9 @@
                                 (read-bitmap "graphics/kgb-pistol-move2.png"))]
               [item-use-image (read-bitmap "graphics/kgb-pistol-use.png")]
               [item-secondary-image (read-bitmap "graphics/kgb-pistol-idle.png")]
-              [death-animation (list (read-bitmap "graphics/kgb-death1.png")
-                                     (read-bitmap "graphics/kgb-death2.png")
-                                     (read-bitmap "graphics/kgb-death3.png"))]))
+              [death-animation (list (read-bitmap "graphics/kgb-dead1.png")
+                                     (read-bitmap "graphics/kgb-dead2.png")
+                                     (read-bitmap "graphics/kgb-dead3.png"))]))
    (cons 'kgb-shotgun
          (new animation-package%
               [idle-image (read-bitmap "graphics/kgb-shotgun-idle.png")]
@@ -30,9 +30,9 @@
                                 (read-bitmap "graphics/kgb-shotgun-move2.png"))]
               [item-use-image (read-bitmap "graphics/kgb-shotgun-use.png")]
               [item-secondary-image (read-bitmap "graphics/kgb-unarmed-idle.png")]
-              [death-animation (list (read-bitmap "graphics/kgb-death1.png")
-                                     (read-bitmap "graphics/kgb-death2.png")
-                                     (read-bitmap "graphics/kgb-death3.png"))]))
+              [death-animation (list (read-bitmap "graphics/kgb-dead1.png")
+                                     (read-bitmap "graphics/kgb-dead2.png")
+                                     (read-bitmap "graphics/kgb-dead3.png"))]))
    
    (cons 'cia-unarmed
          (new animation-package%
