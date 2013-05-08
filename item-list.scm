@@ -18,6 +18,23 @@
           [animation-package (get-animation-package 'kgb-shotgun)]
           [position item-position]
           [image (read-bitmap "graphics/mp-133.png")]))
+    ((eq? item-name 'bread-clean)
+     (new consumable%
+          [consumable-health 40]
+          [consumable-radiation 0]
+          [current-agent item-agent]
+          [animation-package (get-animation-package 'kgb-bread)]
+          [position item-position]
+          [image (read-bitmap "graphics/bread-1.png")]))
+    ((eq? item-name 'irridated-bread)
+     (new consumable%
+          [consumable-health 30]
+          [consumable-radiation 30]
+          [current-agent item-agent]
+          [animation-package (get-animation-package 'kgb-bread)]
+          [position item-position]
+          [image (read-bitmap "graphics/irridated-bread1.png")]))
+          
     (else
      (error "Invalid item name: " item-name))))
 

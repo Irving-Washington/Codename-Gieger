@@ -11,6 +11,19 @@
               [death-animation (list (read-bitmap "graphics/kgb-dead1.png")
                                      (read-bitmap "graphics/kgb-dead2.png")
                                      (read-bitmap "graphics/kgb-dead3.png"))]))
+   
+   (cons 'kgb-bread
+         (new animation-package%
+              [idle-image (read-bitmap "graphics/kgb-bread-idle.png")]
+              [move-image-pair (cons 
+                                (read-bitmap "graphics/kgb-bread-move1.png")
+                                (read-bitmap "graphics/kgb-bread-move2.png"))]
+              [item-use-image (read-bitmap "graphics/kgb-bread-use.png")]
+              [item-secondary-image (read-bitmap "graphics/kgb-bread-idle.png")]
+              [death-animation (list (read-bitmap "graphics/kgb-dead1.png")
+                                     (read-bitmap "graphics/kgb-dead2.png")
+                                     (read-bitmap "graphics/kgb-dead3.png"))]))
+   
    (cons 'kgb-pistol
          (new animation-package%
               [idle-image (read-bitmap "graphics/kgb-pistol-idle.png")]

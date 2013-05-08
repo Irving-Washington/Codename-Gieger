@@ -60,7 +60,7 @@
     
     (define/public (agent-interact agent)
       (let ((proximity-object (get-proximity-object (send agent get-center-position) 32 (cons agent% decal%) game-objects)))
-        (cond ((is-a? proximity-object firearm%) 
+        (cond ((or (is-a? proximity-object firearm%) (is-a? proximity-object consumable%))
                (send agent item-add! proximity-object)
                (delete-game-object! proximity-object))
               (else (void)))))
@@ -102,12 +102,12 @@
     
     (define/private (agent-collision agent)
       (let ((future-corners (send agent get-future-corner-positions)))
-        (unless (not (null? (filter (lambda (corner) (send (send tile-matrix
-                                                                 get-element
-                                                                 (quotient (cdr corner) 32)
-                                                                 (quotient (car corner) 32))
-                                                           collidable?))
-                                    future-corners)))
+        (when (null? (filter (lambda (corner) (send (send tile-matrix
+                                                          get-element
+                                                          (quotient (cdr corner) 32)
+                                                          (quotient (car corner) 32))
+                                                    collidable?))
+                             future-corners))
           (send agent move!))))
     
     

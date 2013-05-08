@@ -2,6 +2,9 @@
   
   (class object%
     
+    (field (list-of-keys '()))
+    ;list-of-keys will be refered to as lok from here on
+    
     ;Keyboard controls
     (define/public (new-key-event key-code shift-code)
       (cond       

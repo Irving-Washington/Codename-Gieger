@@ -90,10 +90,10 @@
                  [current-agent #f]
                  [animation-package #f]
                  [position (mcons (mcar position) (mcdr position))]
-                 [image (read-bitmap "graphics/debree-1.png")]
+                 [image (read-bitmap "graphics/debris-1.png")]
                  [stationary-item (new decal%
                                        [position (mcons 0 0)]
-                                       [image (read-bitmap "graphics/debree-1.png")])]
+                                       [image (read-bitmap "graphics/debris-1.png")])]
                  [projectile-damage 30]
                  [excluded-collisions (cons decal% item%)])
             (wall-debree-helper (+ num 1))))

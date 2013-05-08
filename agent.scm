@@ -28,7 +28,9 @@
     ;Health methods
     (define/public (get-health) health)
     (define/public (increase-health! delta-value)
-      (set! health (+ health delta-value))
+      (if (> (+ health delta-value) 100)
+          (set! health 100)
+          (set! health (+ health delta-value)))
       (unless (> health 0)
         (die)))
     
@@ -36,6 +38,11 @@
     (define/public (get-radiation) radiation)
     (define/public (set-radiation! delta-value)
       (set! radiation (+ radiation delta-value)))
+    
+    (define/public (radiate!)
+      (when (> radiation 0)
+        (increase-health! -1)
+        (set-radiation! -1)))
        
     ;Aim-direction methods
     
@@ -95,7 +102,7 @@
     
     (define/public (item-throw)
       (unless dead
-        (unless (not (mcar inventory))
+        (when (mcar inventory)
           (begin
             (new projectile% 
                  [projectile-size 32]
