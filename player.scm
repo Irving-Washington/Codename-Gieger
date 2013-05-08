@@ -9,8 +9,8 @@
 
     ;Firarm methods
     (define/public (firearm-reload)
-      (unless (not (is-a? (mcar inventory) firearm%))
-        (send (mcar inventory) reload)))
+      (when (is-a? (mcar inventory) firearm%)
+        (send (mcar inventory) reload!)))
     
     (define/public (firearm-check)
       (unless (not (is-a? (mcar inventory) firearm%))

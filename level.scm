@@ -60,7 +60,9 @@
     
     (define/public (agent-interact agent)
       (let ((proximity-object (get-proximity-object (send agent get-center-position) 32 (cons agent% decal%) game-objects)))
-        (cond ((or (is-a? proximity-object firearm%) (is-a? proximity-object consumable%))
+        (cond ((or (is-a? proximity-object firearm%) 
+                   (is-a? proximity-object consumable%)
+                   (is-a? proximity-object magazine%))
                (send agent item-add! proximity-object)
                (delete-game-object! proximity-object))
               (else (void)))))

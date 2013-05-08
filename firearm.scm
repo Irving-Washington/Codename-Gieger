@@ -56,10 +56,12 @@
       (set! ammunition (- ammunition 1)))
          
     ;Reload method
-    (define/public (reload)
-      (if (is-a? magazine% (cdr (send current-agent get-inventory)))
-          (begin (set! ammunition ammunition-capacity) 
-                 (send current-agent item-remove-secondary!))))
+    (define/public (reload!)
+      (let ((second-item (send current-agent get-second-item)))
+        (when (and (is-a? second-item magazine%) (eq? (send second-item get-ammunition-type)
+                                                      ammunition-type))
+          (begin (set! ammunition (send second-item get-ammunition))
+                 (send current-agent item-remove-secondary!)))))
     
     ;Check method
     (define/public (check)

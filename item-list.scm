@@ -34,6 +34,15 @@
           [animation-package (get-animation-package 'kgb-bread)]
           [position item-position]
           [image (read-bitmap "graphics/irridated-bread1.png")]))
+    ((eq? item-name 'mp-133-magazine)
+     (new magazine%
+          [ammunition-capacity 6]
+          [ammunition-type 'pellets]
+          [current-agent item-agent]
+          [animation-package (get-animation-package 'kgb-magazine)]
+          [position item-position]
+          [image (read-bitmap "graphics/magazine-1.png")]))
+          
           
     (else
      (error "Invalid item name: " item-name))))

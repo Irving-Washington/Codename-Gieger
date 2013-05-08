@@ -2,15 +2,17 @@
   
   (class item%
     
-    (init-field ammunition-capacity)
+    (init-field ammunition-capacity
+                ammunition-type)
     (field (ammunition ammunition-capacity))
     
-    ;Ammunition capacity methods
+    ;Ammunition methods
+
     (define/public (get-ammunition-capacity) ammunition-capacity)
+    (define/public (get-ammunition-type) ammunition-type)
     (define/public (get-ammunition) ammunition)
     
-    ;Unload method
-    (define/public (unload!)
-      (set! ammunition (- ammunition 1)))
-    
+    (define/public (use)
+      (void))
+
     (super-new)))

@@ -85,6 +85,12 @@
       (send item set-current-agent! this)
       (change-animation-package!))
     
+    (define/public (get-first-item)
+      (mcar inventory))
+    
+    (define/public (get-second-item)
+      (mcdr inventory))
+    
     (define/public (item-use)
       (unless dead
         (unless (not (mcar inventory))

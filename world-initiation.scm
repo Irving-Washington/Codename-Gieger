@@ -9,7 +9,7 @@
 (load "consumable.scm")
 (load "projectile.scm")
 (load "firearm.scm")
-;(load "magazine.scm")
+(load "magazine.scm")
 ;(load "grenade.scm")
 (load "player.scm")
 (load "level.scm")
@@ -37,6 +37,7 @@
                       [team 'kgb]
                       [animation-package (get-animation-package 'kgb-unarmed)]))
 
+(spawn-item 'mp-133-magazine (mcons 500 400))
 (spawn-item 'bread-clean (mcons 300 300))
 (spawn-item 'irridated-bread (mcons 300 350))
 (spawn-item 'mp-133 (mcons 150 150))
