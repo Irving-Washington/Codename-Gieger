@@ -5,6 +5,7 @@
        [notify-callback (lambda ()
                           (begin
                             (send *level* move-objects)
+                            (send *level* draw-decals-to-background)
                             (send *level* draw-objects-buffer)
                             (send *canvas* refresh)))]))
 (send *game-loop* start 16)

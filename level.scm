@@ -83,6 +83,13 @@
                    (send object draw objects-buffer))
                  game-objects))
     
+    (define/public (draw-decals-to-background)
+      (mfor-each (lambda (game-object)
+                  (when (is-a? game-object decal%)
+                    (send game-object draw level-load)
+                    (delete-game-object! game-object)))
+                game-objects))
+    
     
     (define/public (move-objects)
       (mfor-each (lambda (object)

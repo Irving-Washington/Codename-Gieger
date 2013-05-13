@@ -32,7 +32,7 @@
 (load "item-list.scm")
 
 (define *player* (new player%
-                      [position (mcons 32 32)]
+                      [position (mcons 300 300)]
                       [image (read-bitmap "graphics/kgb-unarmed-idle.png")]
                       [team 'kgb]
                       [animation-package (get-animation-package 'kgb-unarmed)]))

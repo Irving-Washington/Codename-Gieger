@@ -1,12 +1,10 @@
 (define npc%  
+  
   (class agent%
     
-    (inherit-field angle
-                   inventory)
+    (init-field ai)
     
-    (inherit get-projectile-position
-             get-projectile-velocity
-             item-remove-primary!)
+    
     
     (super-new)))
     

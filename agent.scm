@@ -73,7 +73,7 @@
       (mcons (* speed-factor (cos angle)) (* (- speed-factor) (sin angle))))
     
         (define/public (get-random-projectile-velocity speed-factor)
-          (let ((random-angle (+ angle -0.03 (/ (random 30) 100.0))))
+          (let ((random-angle (+ angle -0.3 (/ (random 30) 100.0))))
             (mcons (* speed-factor (cos random-angle)) (* (- speed-factor) (sin random-angle)))))
    
     ;Inventory methods
@@ -166,8 +166,8 @@
         (define (blood-spray-helper num)
         (unless (>= num 7)           
           (new projectile%
-               [start-velocity (mcons (* (+ 7 num) (mcar (get-random-projectile-velocity 20)) 0.06) 
-                                      (* (+ 7 num) (mcdr (get-projectile-velocity 20)) 0.06))]
+               [start-velocity (mcons (* (+ 5 num) (- (random 300) -300 (* 20 num)) (mcar (get-random-projectile-velocity 20)) 0.0002) 
+                                      (* (+ 5 num) (- (random 300) -300 (* 20 num)) (mcdr (get-projectile-velocity 20)) 0.0002))]
                [projectile-size 2]
                [slow-down #t]
                [destroy-on-impact #f]

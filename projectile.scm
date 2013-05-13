@@ -45,7 +45,7 @@
       (send agent increase-health! (- 10 projectile-damage (random 20)))
       
       (define (blood-spray-helper num)
-        (unless (>= num 7)           
+        (unless (>= num 15)           
           (new projectile%
                [start-velocity (mcons (* (+ num 3) (- (random 300) -300 (* 30 num)) 0.0002 (mcar velocity))
                                       (* (+ num 3) (- (random 300) -300 (* 30 num)) 0.0002 (mcdr velocity)))]

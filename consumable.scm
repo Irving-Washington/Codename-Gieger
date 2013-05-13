@@ -15,8 +15,8 @@
     (define/public (use)
       (begin (send current-agent increase-health! consumable-health)
              (send current-agent set-radiation! consumable-radiation)
-             (send current-agent set-used-item! #t)
-             (send current-agent item-remove-primary!)))
+             (send current-agent set-used-item! #t)))
+             ;(send current-agent item-remove-primary!)))
     
     (super-new)))
 
