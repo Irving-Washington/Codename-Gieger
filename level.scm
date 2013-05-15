@@ -4,15 +4,13 @@
     
     (init-field tile-matrix)
     
-    (field (game-objects (mlist)))
-    
-    (field (object-count 0))
-    
-    (field (level-bitmap (make-bitmap 1536 768)))
-    (field (level-load (new bitmap-dc% [bitmap level-bitmap])))
-    
-    (field (buffered-bitmap (make-bitmap 1536 768)))
-    (field (objects-buffer (new bitmap-dc% [bitmap buffered-bitmap])))
+    (field (game-objects (mlist))
+           (ai-list (mlist))
+           (object-count 0)
+           (level-bitmap (make-bitmap 1536 768))
+           (level-load (new bitmap-dc% [bitmap level-bitmap]))
+           (buffered-bitmap (make-bitmap 1536 768))
+           (objects-buffer (new bitmap-dc% [bitmap buffered-bitmap])))
     (send objects-buffer set-smoothing 'smoothed)
    
     (define/public (get-buffered-bitmap) buffered-bitmap)  
@@ -23,11 +21,14 @@
     
     (define/public (get-game-objects) game-objects)
     
-    (define/public (object-counter) 
-      (begin
-        (set! object-count (+ 1 object-count))
-        (- object-count 1)))
+    (define/public (add-ai! ai)
+      (set! ai-list (mcons ai ai-list)))
     
+    (define/public (update-ai)
+      (mfor-each (lambda (ai)
+                   (send ai scan-level)
+                   (send ai update-agent))
+                 ai-list))
     
     (define/public (get-proximity-object coordinates size exclusion-types object-list)
       (if (null? object-list)
@@ -140,7 +141,6 @@
                 #t
                 (begin
                   (set! collision-target (get-proximity-object future-position 32 excluded-collisions game-objects))
-                  ;(display collision-target)
                   (if collision-target
                       #t
                       #f)))))

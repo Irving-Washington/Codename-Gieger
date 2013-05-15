@@ -21,6 +21,7 @@
 (load "animation-package.scm")
 (load "animation-package-list.scm")
 (load "decal.scm")
+(load "ai.scm")
 (load "npc.scm")
 
 
@@ -40,30 +41,41 @@
 (spawn-item 'mp-133-magazine (mcons 500 400))
 (spawn-item 'bread-clean (mcons 300 300))
 (spawn-item 'irridated-bread (mcons 300 350))
-(spawn-item 'mp-133 (mcons 150 150))
-(give-item 'makarov-pb *player*)
+(spawn-item 'makarov-pb (mcons 150 150))
+(give-item 'mp-133 *player*)
 
-(new npc%
-     [position (mcons 440 64)]
-     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-     [team 'cia]
-     [animation-package (get-animation-package 'cia-unarmed)])
-(new npc%
-     [position (mcons 200 600)]
-     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-     [team 'cia]
-     [animation-package (get-animation-package 'cia-unarmed)])
-(new npc%
-     [position (mcons 1050 600)]
-     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-     [team 'cia]
-     [animation-package (get-animation-package 'cia-unarmed)])
-(new npc%
-     [position (mcons 550 300)]
-     [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-     [team 'cia]
-     [animation-package (get-animation-package 'cia-unarmed)])
+(give-item 'makarov-pb (new npc%
+                            [position (mcons 1000 100)]
+                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+                            [team 'cia]
+                            [animation-package (get-animation-package 'cia-unarmed)]))
+(give-item 'makarov-pb (new npc%
+                            [position (mcons 200 600)]
+                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+                            [team 'cia]
+                            [animation-package (get-animation-package 'cia-unarmed)]))
+(give-item 'makarov-pb (new npc%
+                            [position (mcons 1050 600)]
+                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+                            [team 'cia]
+                            [animation-package (get-animation-package 'cia-unarmed)]))
+(give-item 'makarov-pb (new npc%
+                            [position (mcons 1100 200)]
+                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+                            [team 'cia]
+                            [animation-package (get-animation-package 'cia-unarmed)]))
+(give-item 'makarov-pb (new npc%
+                            [position (mcons 1000 300)]
+                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+                            [team 'cia]
+                            [animation-package (get-animation-package 'cia-unarmed)]))
+(give-item 'makarov-pb (new npc%
+                            [position (mcons 1200 300)]
+                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
+                            [team 'cia]
+                            [animation-package (get-animation-package 'cia-unarmed)]))
 
+ 
 
 (define *window* (new frame%
                       [width 1550]

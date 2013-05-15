@@ -10,6 +10,8 @@
     (init-field ammunition
                 ammunition-type)
     
+    (define/public (get-ammunition) ammunition)
+    
     ;Use method
     
     (define/override (use)

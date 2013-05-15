@@ -15,13 +15,14 @@
     (field (health 100)
            (radiation 0)
            (inventory (mcons #f #f))
-           (target-coordinates (cons 0 0))
+           (target-coordinates (mcons 0 0))
            (dead #f)
            (use-animation-time 0)
            (move-animation-time 0)
            (used-item #f)
            (default-animation-package animation-package)
-           (out-of-ammo #f))
+           (out-of-ammo #f)
+           (run-speed 2))
   
     (define/public (get-team) team)
     
@@ -51,8 +52,8 @@
         (set! target-coordinates coordinates)
         (let ((x-position (+ 16 (mcar position)))
               (y-position (+ 16 (mcdr position)))
-              (x-coordinates (car coordinates))
-              (y-coordinates (cdr coordinates)))
+              (x-coordinates (mcar coordinates))
+              (y-coordinates (mcdr coordinates)))
           (cond ((or (and (> (- x-coordinates x-position) 0)
                           (> (- y-coordinates y-position) 0))
                      (and (> (- x-coordinates x-position) 0)
@@ -190,6 +191,7 @@
       (set! dead #t)
       (set! move-animation-time 0)
       (set! use-animation-time (current-milliseconds)))
+      
       
       ;(death-animation-loop 0 0))
     

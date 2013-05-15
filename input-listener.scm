@@ -19,7 +19,7 @@
         (queue-callback
          (lambda () 
            (send *interaction* new-mouse-event (send mouse-event get-event-type))
-           (send *interaction* new-mouse-position (cons (send mouse-event get-x)
+           (send *interaction* new-mouse-position (mcons (send mouse-event get-x)
                                                         (send mouse-event get-y)))))))
     
     (super-new)))
