@@ -2,7 +2,7 @@
   (cond
     ((eq? item-name 'makarov-pb)
      (new firearm%
-          [ammunition 80]
+          [ammunition 800]
           [ammunition-type 'bullet]
           [base-damage 70]
           [current-agent item-agent]

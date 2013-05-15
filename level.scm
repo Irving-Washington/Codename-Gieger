@@ -90,7 +90,13 @@
                     (delete-game-object! game-object)))
                 game-objects))
     
+    (define/public (draw-pause-menu)
+      (send objects-buffer set-text-foreground "white")
+      (send objects-buffer set-scale 2 2)
+      (send objects-buffer draw-text "Game paused." 350 180)
+      (send objects-buffer set-scale 1 1))
     
+    ;Movement and collision
     (define/public (move-objects)
       (mfor-each (lambda (object)
                    (unless (send object get-stationary)

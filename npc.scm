@@ -2,7 +2,7 @@
   
   (class agent%
     
-    (init-field ai)
+    ;(init-field ai)
     
     
     

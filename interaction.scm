@@ -2,7 +2,9 @@
   
   (class object%
     
-    (field (list-of-keys '()))
+    (field (list-of-keys '())
+           (game-paused #f))
+    
     ;list-of-keys will be refered to as lok from here on
     
     ;Keyboard controls
@@ -21,7 +23,7 @@
         ;Interaction event
         ((eq? key-code #\e) (send *player* world-interact)) 
         ;Pause menu
-        ((eq? key-code 'escape) (send *game-loop* pause))))
+        ((eq? key-code 'escape) (pause-game))))
     
     (define/public (new-key-release-event key-release)
       (cond 
@@ -43,5 +45,13 @@
     ;Update mouse position
     (define/public (new-mouse-position mouse-position)
       (send *player* set-aim-target! mouse-position))
+    
+    (define/private (pause-game)
+      (set! game-paused (not game-paused))
+      (if game-paused
+          (send *game-loop* stop)
+          (send *game-loop* start 16))
+      (send *level* draw-pause-menu)
+      (send *canvas* refresh))
     
     (super-new)))
