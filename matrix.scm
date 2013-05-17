@@ -7,6 +7,9 @@
     
     (field (matrix-representation '()))
     
+    (define/public (set-matrix-representation! new-matrix-representation)
+      (set! matrix-representation new-matrix-representation))
+    
     (define/private (create-matrix-representation)
       
       (define (create-row-helper current-column-num row)

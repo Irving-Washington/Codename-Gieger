@@ -16,7 +16,7 @@
 (load "tile.scm")
 (load "matrix.scm")
 (load "interaction.scm")
-(load "input-listener.scm")
+(load "input-canvas.scm")
 (load "level-loader.scm")
 (load "animation-package.scm")
 (load "animation-package-list.scm")
@@ -27,13 +27,15 @@
 
 
 (define *level-loader* (new level-loader%))
-(define *level* (new level% [tile-matrix (send *level-loader* load-level 1)]))
+(define *level* (new level% 
+                     [tile-matrix (send *level-loader* get-level-data 1)]
+                     [level-image (send *level-loader* get-level-image 1)]))
 (send *level* draw-level-buffer)
 
 (load "item-list.scm")
 
 (define *player* (new player%
-                      [position (mcons 300 300)]
+                      [position (mcons 800 120)]
                       [image (read-bitmap "graphics/kgb-unarmed-idle.png")]
                       [team 'kgb]
                       [animation-package (get-animation-package 'kgb-unarmed)]))
@@ -56,21 +58,6 @@
                             [animation-package (get-animation-package 'cia-unarmed)]))
 (give-item 'makarov-pb (new npc%
                             [position (mcons 1050 600)]
-                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-                            [team 'cia]
-                            [animation-package (get-animation-package 'cia-unarmed)]))
-(give-item 'makarov-pb (new npc%
-                            [position (mcons 1100 200)]
-                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-                            [team 'cia]
-                            [animation-package (get-animation-package 'cia-unarmed)]))
-(give-item 'makarov-pb (new npc%
-                            [position (mcons 1000 300)]
-                            [image (read-bitmap "graphics/cia-unarmed-idle.png")]
-                            [team 'cia]
-                            [animation-package (get-animation-package 'cia-unarmed)]))
-(give-item 'makarov-pb (new npc%
-                            [position (mcons 1200 300)]
                             [image (read-bitmap "graphics/cia-unarmed-idle.png")]
                             [team 'cia]
                             [animation-package (get-animation-package 'cia-unarmed)]))

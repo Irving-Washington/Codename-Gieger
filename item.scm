@@ -10,7 +10,9 @@
     
     (field (zero-velocity (mcons 0.0 0.0)))
     
-    (define/public (get-animation) animation-package)
+    (define/public (get-animation team) 
+      (cond ((eq? team 'kgb) (car animation-package))
+            ((eq? team 'cia) (cdr animation-package))))
     
     ;Current agent methods
     (define/public (get-current-agent) current-agent)

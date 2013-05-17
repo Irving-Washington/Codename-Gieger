@@ -22,7 +22,7 @@
     
     (define/public (get-delta-x) delta-x)
     (define/public (get-delta-y) delta-y)
-    (define/public (get-disctance-to-target) distance-to-target)
+    (define/public (get-distance-to-target) distance-to-target)
     
     (define/override (move!)
       (when current-move-target

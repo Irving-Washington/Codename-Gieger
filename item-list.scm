@@ -2,11 +2,12 @@
   (cond
     ((eq? item-name 'makarov-pb)
      (new firearm%
-          [ammunition 800]
+          [ammunition 8]
           [ammunition-type 'bullet]
           [base-damage 70]
           [current-agent item-agent]
-          [animation-package (get-animation-package 'kgb-pistol)]
+          [animation-package (cons (get-animation-package 'kgb-pistol)
+                                   (get-animation-package 'cia-pistol))]
           [position item-position]
           [image (read-bitmap "graphics/makarov-pb.png")]))
     ((eq? item-name 'mp-133)
@@ -15,7 +16,8 @@
           [ammunition-type 'pellets]
           [base-damage 30]
           [current-agent item-agent]
-          [animation-package (get-animation-package 'kgb-shotgun)]
+          [animation-package (cons (get-animation-package 'kgb-shotgun)
+                                   (get-animation-package 'cia-shotgun))]
           [position item-position]
           [image (read-bitmap "graphics/mp-133.png")]))
     ((eq? item-name 'bread-clean)
@@ -23,7 +25,8 @@
           [consumable-health 40]
           [consumable-radiation 0]
           [current-agent item-agent]
-          [animation-package (get-animation-package 'kgb-bread)]
+          [animation-package (cons (get-animation-package 'kgb-bread)
+                                   #f)]
           [position item-position]
           [image (read-bitmap "graphics/bread-1.png")]))
     ((eq? item-name 'irridated-bread)
@@ -31,7 +34,8 @@
           [consumable-health 30]
           [consumable-radiation 30]
           [current-agent item-agent]
-          [animation-package (get-animation-package 'kgb-bread)]
+          [animation-package (cons (get-animation-package 'kgb-bread)
+                                   #f)]
           [position item-position]
           [image (read-bitmap "graphics/irridated-bread1.png")]))
     ((eq? item-name 'mp-133-magazine)
@@ -39,7 +43,8 @@
           [ammunition-capacity 6]
           [ammunition-type 'pellets]
           [current-agent item-agent]
-          [animation-package (get-animation-package 'kgb-magazine)]
+          [animation-package (cons (get-animation-package 'kgb-magazine)
+                                   #f)]
           [position item-position]
           [image (read-bitmap "graphics/magazine-1.png")]))
           

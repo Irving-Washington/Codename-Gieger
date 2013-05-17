@@ -39,7 +39,7 @@
         ;Fire
         ((eq? mouse-event 'left-down) (send *player* item-use))
         ;Throw
-        ((eq? mouse-event 'right-down) (send *player* item-throw))))
+        ((eq? mouse-event 'right-down) (send *player* item-throw (send *player* get-projectile-velocity 25)))))
     
     
     ;Update mouse position

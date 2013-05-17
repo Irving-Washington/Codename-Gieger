@@ -1,4 +1,9 @@
+;class: decal
+;superclass: game-object
+;this class defines decals, small pictures such as stationary blood.
+
 (define decal%
+  
   (class game-object%
     
     (super-new)

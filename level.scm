@@ -2,7 +2,8 @@
   
   (class object%
     
-    (init-field tile-matrix)
+    (init-field tile-matrix
+                level-image)
     
     (field (game-objects (mlist))
            (ai-list (mlist))
@@ -61,21 +62,14 @@
     
     (define/public (agent-interact agent)
       (let ((proximity-object (get-proximity-object (send agent get-center-position) 32 (cons agent% decal%) game-objects)))
-        (cond ((or (is-a? proximity-object firearm%) 
-                   (is-a? proximity-object consumable%)
-                   (is-a? proximity-object magazine%))
+        (cond ((is-a? proximity-object item%)
                (send agent item-add! proximity-object)
                (delete-game-object! proximity-object))
               (else (void)))))
 
     ;Load and draw level background
     (define/public (draw-level-buffer)
-      (send level-load clear)
-      (mfor-each (lambda (row)
-                   (mfor-each (lambda (tile)
-                                (send tile draw level-load))
-                              row))
-                 (send tile-matrix get-matrix-representation)))
+      (send level-load draw-bitmap level-image 0 0))
         
     
     (define/public (draw-objects-buffer)
@@ -90,6 +84,13 @@
                     (send game-object draw level-load)
                     (delete-game-object! game-object)))
                 game-objects))
+    
+    (define/public (draw-corpses-to-background)
+      (mfor-each (lambda (game-object)
+                   (when (and (is-a? game-object agent%) (send game-object death-animation-complete?))
+                     (send game-object draw level-load)
+                     (delete-game-object! game-object)))
+                 game-objects))
     
     (define/public (draw-pause-menu)
       (send objects-buffer set-text-foreground "white")
@@ -118,11 +119,11 @@
     
     (define/private (agent-collision agent)
       (let ((future-corners (send agent get-future-corner-positions)))
-        (when (null? (filter (lambda (corner) (send (send tile-matrix
-                                                          get-element
-                                                          (quotient (cdr corner) 32)
-                                                          (quotient (car corner) 32))
-                                                    collidable?))
+        (when (null? (filter (lambda (corner) (> (send tile-matrix
+                                                        get-element
+                                                        (quotient (cdr corner) 32)
+                                                        (quotient (car corner) 32))
+                                                  2))
                              future-corners))
           (send agent move!))))
     
@@ -137,7 +138,7 @@
                                          get-element
                                          (quotient (mcdr future-position) 32)
                                          (quotient (mcar future-position) 32)))
-            (if (send collision-target collidable?)
+            (if (> collision-target 2)
                 #t
                 (begin
                   (set! collision-target (get-proximity-object future-position 32 excluded-collisions game-objects))

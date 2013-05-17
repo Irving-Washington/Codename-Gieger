@@ -36,7 +36,7 @@
       (cond
         ((is-a? object agent%)
          (agent-impact object))
-        ((and (is-a? object tile%) destroy-on-impact)
+        ((and (number? object) destroy-on-impact)
          (wall-impact))
         (else
          (bounce!))))
