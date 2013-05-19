@@ -6,34 +6,36 @@
   
   (class item%
     
-    (init-field consumable-health
-                consumable-radiation)
     ;consumable-health is the value that will be added to
     ;the agent using the item.
     
     ;consumable-radiation is the value that will be added to
     ;the agent using the item.
+    (init-field consumable-health
+                consumable-radiation)
     
     
-    (inherit-field current-agent)
     ;current-agent holds the name
     ;of the owner of an item.
+    (inherit-field current-agent)
     
     
     ;Consumable methods
-    (define/public (get-consumable-health) consumable-health)
-    ;Retrieves the health potential of a consumable.
     
-    (define/public (get-consumable-radiation) consumeable-radiation)
+    ;Retrieves the health potential of a consumable.
+    (define/public (get-consumable-health) consumable-health)
+    
     ;Retrieves the radiation potential of a consumable.
+    (define/public (get-consumable-radiation) consumeable-radiation)
     
     
     ;Use methods
+    
+    ;Causes an agent to use the consumable, gaining it's effects.
     (define/public (use)
       (begin (send current-agent increase-health! consumable-health)
              (send current-agent set-radiation! consumable-radiation)
              (send current-agent set-used-item! #t)
              (send current-agent item-remove-primary!)))
-    ;Causes an agent to use the consumable, gaining it's effects.
 
     (super-new)))

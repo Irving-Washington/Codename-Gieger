@@ -1,3 +1,5 @@
+;This file keeps information of all the items in the game.
+
 (define (create-item item-name item-position item-agent)
   (cond
     ((eq? item-name 'makarov-pb)

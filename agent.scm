@@ -6,8 +6,6 @@
   
   (class game-object%
     
-    (init-field team
-                animation-package)
     ;All agents belong to a certain team. this variable is used
     ;to help npc's determine whether to attack an agent or not
     
@@ -15,34 +13,21 @@
     ;animations a certain agent should perform, depending on what
     ;the current agent is doing, for example, this plays a walking
     ;animation if the agent is walking
+    (init-field team
+                animation-package)
     
-    
+    ;Position, velocity, angle and size are variables that determine
+    ;how a certain game-object performs in the game.    
     (inherit-field position
                    velocity
                    angle
-                   size)
-    ;Position, velocity, angle and size are variables that determine
-    ;how a certain game-object performs in the game.
+                   size)    
     
-    
-    (inherit set-image!)
     ;set-image! is a procedure defined in game-object that changes
-    ;the current image to another image
+    ;the current image to another image    
+    (inherit set-image!)
     
     
-    (field (health 100)
-           (radiation 0)
-           (radiation-time 0)
-           (inventory (mcons #f #f))
-           (target-coordinates (mcons 0 0))
-           (dead #f)
-           (death-animation-complete #f)
-           (use-animation-time 0)
-           (move-animation-time 0)
-           (used-item #f)
-           (default-animation-package animation-package)
-           (out-of-ammo #f)
-           (run-speed 2))
     ;All these fields are agent-specific variables. If an agents
     ;health reaches zero, the agent is considered dead.
     
@@ -78,18 +63,31 @@
     ;the agents current firearm will display a use-animation.
     
     ;Run-speed is the velocity at which an npc moves.
-   
+    (field (health 100)
+           (radiation 0)
+           (radiation-time 0)
+           (inventory (mcons #f #f))
+           (target-coordinates (mcons 0 0))
+           (dead #f)
+           (death-animation-complete #f)
+           (use-animation-time 0)
+           (move-animation-time 0)
+           (used-item #f)
+           (default-animation-package animation-package)
+           (out-of-ammo #f)
+           (run-speed 2))
     
-    ;
-    (define/public (get-team) team)
+    
     ;Retrieves the team variable from an agent.
+    (define/public (get-team) team)
+
     
-    
-    ;
     ;Health methods
-    (define/public (get-health) health)
-    ;Retrieves the current health of an agent.
     
+    ;Retrieves the current health of an agent.
+    (define/public (get-health) health)
+
+    ;Modifies the current health of an agent.    
     (define/public (increase-health! delta-value)
       (unless dead
         (if (> (+ health delta-value) 100)
@@ -97,33 +95,33 @@
             (set! health (+ health delta-value)))
         (unless (> health 0)
           (die))))
-    ;Modifies the current health of an agent.
     
     
     ;
     ;Radiation methods
-    (define/public (get-radiation) radiation)
+    
     ;Retrieves the current amount of radiation 
     ;from an agent.
+    (define/public (get-radiation) radiation)
     
+    ;Modifies the current radiation of an agent.
     (define/public (set-radiation! delta-value)
       (set! radiation (+ radiation delta-value)))
-    ;Modifies the current radiation of an agent.
-    
+   
+    ;Causes an agent to "radiate", which means the
+    ;Radiation will decrease proportionally to the health, until
+    ;the radiation reaches zero.
     (define/public (radiate!)
       (unless (< (- (current-milliseconds) radiation-time) 500)
         (when (> radiation 0)
           (increase-health! -1)
           (set-radiation! -1))
         (set! radiation-time (current-milliseconds))))
-    ;Causes an agent to "radiate", which means the
-    ;Radiation will decrease proportionally to the health, until
-    ;it reaches zero.
-    
-    
-    ;
+
+
     ;Aim-direction methods
     
+    ;Sets the angle at which an agent will be rotated towards.
     (define/public (set-aim-target! coordinates)
       (unless dead
         (set! target-coordinates coordinates)
@@ -143,27 +141,26 @@
                           (< (- y-coordinates y-position) 0)))
                  (set! angle (- 3.1416 (atan (/ (- y-position y-coordinates)
                                                 (- x-position x-coordinates))))))))))
-    ;Sets the angle at which an agent will be rotated towards.
-    
+    ;Retrieves the current projectile position.
     (define/public (get-projectile-position)
       (mcons (+ 20 (round (* 16 (sin angle))) (mcar position)) (+ 20 (round (* -16 (sin angle))) (mcdr position))))
-    ;Retrieves the current projectile position.
     
+    ;Retrieves the velocity of a projectile.
     (define/public (get-projectile-velocity speed-factor)
       (mcons (* speed-factor (cos angle)) (* (- speed-factor) (sin angle))))
-    ;Retrieves the velocity of a projectile.
     
+    ;Makes a random angle at which certain projectiles would
+    ;be fired from.
     (define/public (get-random-projectile-velocity speed-factor)
       (let ((random-angle (+ angle -0.3 (/ (random 30) 100.0))))
         (mcons (* speed-factor (cos random-angle)) (* (- speed-factor) (sin random-angle)))))
-    ;Makes a random angle at which certain projectiles would
-    ;be fired from.
     
     
-    
-    ;
     ;Inventory methods
     
+    ;Adds an item to an agents inventory. If both slots
+    ;are filled, it will throw the main item and equip the item
+    ;it recently added.
     (define/public (item-add! item)
       (cond ((not (mcar inventory)) (set-mcar! inventory item))
             ((not (mcdr inventory)) (set-mcdr! inventory item))
@@ -171,38 +168,39 @@
                   (set-mcar! inventory item)))
       (send item set-current-agent! this)
       (change-animation-package!))
-    ;Adds an item to an agents inventory. If both slots
-    ;are filled, it will throw the main item and equip the item
-    ;it recently added.
+
     
+    ;Retrieves the main item from an agents inventory.
     (define/public (get-first-item)
       (mcar inventory))
-    ;Retrieves the main item from an agents inventory.
     
+    ;Retrieves the secondary item from an agents inventory.
     (define/public (get-second-item)
       (mcdr inventory))
-    ;Retrieves the secondary item from an agents inventory.
     
+    ;Makes the agent use it's item in it's main slot.
     (define/public (item-use)
       (unless dead
         (unless (not (mcar inventory))
           (send (mcar inventory) use))))
-    ;Makes the agent use it's item in it's main slot.
     
-    (define/public (set-used-item! value)
-      (set! used-item value))
     ;Sets the variable 'used-item' to a value, more specifically
     ;a #t/#f value.
+    (define/public (set-used-item! value)
+      (set! used-item value))
     
+    ;Removes the main inventory item from the agent.
     (define/public (item-remove-primary!)
       (set-mcar! inventory #f)
       (change-animation-package!))
-    ;Removes the main inventory item from the agent.
     
+    ;Removes the secondary inventory item from an agent.
     (define/public (item-remove-secondary!)
       (set-mcdr! inventory #f))
-    ;Removes the secondary inventory item from an agent.
     
+    ;Creates a projectile out of the agents current main item,
+    ;which is then reverted back to an item in the level, which
+    ;can be picked up yet again.
     (define/public (item-throw velocity)
       (unless dead
         (when (mcar inventory)
@@ -220,47 +218,44 @@
                  [projectile-damage 50]
                  [excluded-collisions (cons decal% item%)])
             (item-remove-primary!)))))
-    ;Creates a projectile out of the agents current main item,
-    ;which is then reverted back to an item in the level, which
-    ;can be picked up yet again.
     
+    ;Swaps the secondary item with the main item in an agents inventory.
     (define/public (item-switch!)
       (let ((temp (mcar inventory)))
         (set-mcar! inventory (mcdr inventory))
         (set-mcdr! inventory temp))
       (change-animation-package!))
-    ;Swaps the secondary item with the main item in an agents inventory.
 
-    
-    ;
+
     ;Move method
     
+    ;Moves the agent around in the level.
     (define/override (move!)
       (unless dead
         (set-aim-target! target-coordinates)
         (set-mcar! position (+ (mcar position) (mcar velocity)))
         (set-mcdr! position (+ (mcdr position) (mcdr velocity)))))
-    ;Moves the agent around in the level.
     
-    
-    ;
+
     ;Animation methods
     
+    ;Animates an agents movement.
     (define/public (move-animation)
       (unless (< (- (current-milliseconds) move-animation-time) 350)
         (if (and (= 0 (mcar velocity)) (= 0 (mcdr velocity)))
             (set-image! (send animation-package get-idle-image))
             (set-image! (send animation-package get-next-move-image)))
         (set! move-animation-time (current-milliseconds))))
-    ;Animates an agents movement.
     
+    ;Changes an agents current animation packate, depending on what kind of
+    ;item an agent is holding.
     (define/public (change-animation-package!)
       (if (mcar inventory)
           (set! animation-package (send (mcar inventory) get-animation team))
           (set! animation-package default-animation-package)))
-    ;Changes an agents current animation packate, depending on what kind of
-    ;item an agent is holding.
     
+    ;Changes an agents animation to a state so that it looks like it's using
+    ;it's item.
     (define/private (use-animation)
       (unless (and (< (- (current-milliseconds) use-animation-time) 100) out-of-ammo)
         (if used-item
@@ -269,9 +264,8 @@
               (set! used-item #f))
             (move-animation))
         (set! use-animation-time (current-milliseconds))))
-    ;Changes an agents animation to a state so that it looks like it's using
-    ;it's item.
     
+    ;Begins a death animation.
     (define/public (death-animation)
       (define (blood-spray-helper num)
         (unless (>= num 7)           
@@ -292,18 +286,17 @@
                [projectile-damage 0]
                [excluded-collisions (cons game-object% decal%)])
           (blood-spray-helper (+ num 1))))
-      (if (> (- (current-milliseconds) use-animation-time) 3000)
+      (if (> (- (current-milliseconds) use-animation-time) 1200)
           (set! death-animation-complete #t)
-          (unless (< (- (current-milliseconds) move-animation-time) 500)
+          (unless (< (- (current-milliseconds) move-animation-time) 400)
             (set-image! (send animation-package get-next-death-image))
             (blood-spray-helper 1)
             (set! move-animation-time (current-milliseconds)))))
-    ;Begins a death animation.
+
     
-    
-    ;
     ;Die method
     
+    ;Kills the agent, rendering it un-interactable by the AI and player.
     (define/public (die)
       (item-throw (get-projectile-velocity 15))
       (item-switch!)
@@ -311,17 +304,16 @@
       (set! dead #t)
       (set! move-animation-time 0)
       (set! use-animation-time (current-milliseconds)))
-    ;Kills the agent, rendering it un-interactable by the AI and player.
     
-    (define/public (is-dead?) dead)
     ;Checks whether or not the agent is dead.
+    (define/public (is-dead?) dead)
     
     (define/public (death-animation-complete?) death-animation-complete)
     
-    
-    ;
+
     ;Draw method
     
+    ;Draws the agent on the level.
     (define/override (draw level-buffer)
       (if dead
           (death-animation)
@@ -329,6 +321,5 @@
             (move-animation)
             (use-animation)))
       (super draw level-buffer))
-    ;Draws the agent on the level.
     
     (super-new)))

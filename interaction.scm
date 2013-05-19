@@ -1,13 +1,20 @@
+;class: interaction
+;superclass: object
+;this class defines the interaction methods the user has
+;to control the player.
+
 (define interaction%
   
   (class object%
     
-    (field (list-of-keys '())
-           (game-paused #f))
+    (field (game-paused #f))
     
-    ;list-of-keys will be refered to as lok from here on
     
     ;Keyboard controls
+    
+    
+    ;Recieves information from input-canvas, and does the appropriate action
+    ;in regards to what key has been pressed or released.
     (define/public (new-key-event key-code shift-code)
       (cond       
         ;Movement key-events
@@ -33,6 +40,9 @@
     
     
     ;Mouse controls
+    
+    ;Recieves information from input-canvas, and does the appropriate action
+    ;in regards to what mouse events has occured.
     (define/public (new-mouse-event mouse-event)
       ;(display mouse-event)
       (cond
@@ -41,11 +51,15 @@
         ;Throw
         ((eq? mouse-event 'right-down) (send *player* item-throw (send *player* get-projectile-velocity 25)))))
     
-    
     ;Update mouse position
+    
+    ;Recieves information about the current mouse position and updates
+    ;the angle of the player accordingly.
     (define/public (new-mouse-position mouse-position)
       (send *player* set-aim-target! mouse-position))
     
+    
+    ;Pauses the game loop.
     (define/private (pause-game)
       (set! game-paused (not game-paused))
       (if game-paused

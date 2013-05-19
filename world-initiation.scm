@@ -1,3 +1,4 @@
+;Creates the world.
 (require racket/mpair)
 
 (define *level-size* (cons 24 48))
@@ -79,5 +80,3 @@
 (define *interaction* (new interaction%))
 
 (send *window* show #t)
-
-  

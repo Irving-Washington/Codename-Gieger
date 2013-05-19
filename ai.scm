@@ -6,14 +6,9 @@
   
   (class object%
     
-    (init-field current-agent)
     ;An AI belongs to an agent, but never a player.
+    (init-field current-agent)
     
-    (field (current-target #f)
-           (attack-target #f)
-           (last-use-time (current-milliseconds))
-           (use-delay 1000)
-           (possible-targets (mlist)))
     ;Current-target is the field that determines the angle at which the
     ;NPC will be rotated towards.
     
@@ -25,9 +20,16 @@
     
     ;Possible-targets is a mutable list of agents that belongs to a team not
     ;eq? to the current agents team.
+    (field (current-target #f)
+           (attack-target #f)
+           (last-use-time (current-milliseconds))
+           (use-delay 1000)
+           (possible-targets (mlist)))
     
     
     
+    ;Scans the level for possible targets, and sets the NPCs current
+    ;target to a possible target.
     (define/public (scan-level)
       (mfor-each (lambda (target)
                    (when (and (is-a? target agent%)
@@ -44,11 +46,10 @@
             (set! current-target (send (mcar possible-targets) get-position))
             (set! attack-target #t)))
       (set! possible-targets (mlist)))
-    ;Scans the level for possible targets, and sets the NPCs current
-    ;target to a possible target.
           
           
     
+    ;Updates the AI to make the NPC act, depending on it's current state.
     (define/public (update-agent)
       (if current-target
         (begin
@@ -65,23 +66,21 @@
                       (< (send current-agent get-distance-to-target) 40))
                  (use-weapon))))
         (send current-agent remove-move-target!)))
-    ;Updates the AI to make the NPC act, depending on it's current state.
       
     
     
+    ;Causes the NPC to use it's weapon.  
     (define/private (use-weapon)
       (send current-agent item-use)
       (set! last-use-time (current-milliseconds)))
-    ;Causes the NPC to use it's weapon.  
     
     
     
+    ;Checks whether or not the NPC can see it's target.
     (define/private (visible-from-agent? target-position)     
       #t)
-    ;Checks whether or not the NPC can see it's target.
     
     
     
     (send *level* add-ai! this)
     (super-new)))
-    
